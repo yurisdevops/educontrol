@@ -1,0 +1,73 @@
+/* src/App.module.css */
+.reactCalendar {
+  width: 100%;
+  border: 2px solid hsl(152, 86%, 25%);
+  padding: 4px;
+  border-radius: 8px;
+}
+
+.tile {
+  padding: 16px;
+  text-align: center;
+  transition: background-color 0.15s ease-in-out;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.tile:hover {
+  background-color: #e2e8f0; /* Gray 200 */
+}
+.navigation {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 4px;
+}
+
+.navigationButton {
+  color: #4b5563; /* Gray 700 */
+  padding: 8px;
+  transition: background-color 0.15s ease-in-out;
+  cursor: pointer;
+}
+
+.navigationButton:hover {
+  background-color: #e2e8f0; /* Gray 200 */
+}
+
+.navigationLabel {
+  font-weight: bold;
+  flex-grow: 1;
+  text-align: center;
+  text-transform: capitalize;
+}
+.labelText {
+  text-transform: uppercase;
+}
+
+.heading {
+  text-transform: capitalize;
+  font-weight: bold;
+  font-size: 24px;
+  color: #000;
+}
+
+.eventList {
+  font-size: 12px;
+  margin-top: 10px;
+  font-weight: 500;
+  color: #000;
+}
+
+.eventDay {
+  background-color: #eeff00;
+  border-radius: 100%; /* Cor para dias com eventos */
+  border: 1px solid #ccc;
+  color: #000;
+}
+
+::-webkit-scrollbar {
+  display: none;
+}

@@ -1,0 +1,65 @@
+/** @type {import('tailwindcss').Config} */
+import defaultTheme from "tailwindcss/defaultTheme";
+export default {
+  content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
+  theme: {
+    colors: {
+      greenEdu: "#5DEFD5",
+      whiteEdu: "#FAFAFA",
+      blackEdu: "#000000",
+      redEdu: "#FF0000",
+      blueEdu: "#0000FF",
+      yellowEdu: "#FFFF00",
+      purpleEdu: "#800080",
+    },
+    extend: {
+      fontFamily: {
+        sans: ["Inter", ...defaultTheme.fontFamily.sans],
+      },
+      height: {
+        254: "50rem",
+        128: "36.5rem",
+        350: "80rem",
+        85: "22rem",
+        100: "28rem",
+        150: "52rem",
+      },
+      width: {
+        254: "50rem",
+        300: "60rem",
+        128: "36.5rem",
+        130: "41rem",
+        100: "32rem",
+        350: "80rem",
+        85: "22rem",
+        1900: "100rem",
+        94: "23.78rem",
+      },
+      fontSize: {
+        xp: "10px",
+      },
+      margin: {
+        88: "452px",
+        100: "600px",
+        110: "35rem",
+        108: "34rem",
+        112: "34.5rem",
+        116: "35.5rem",
+        124: "36.5rem",
+        126: "37rem",
+        128: "37.5rem",
+        120: "700px",
+        128: "1000px",
+        129: "59rem",
+        130: "90rem",
+        132: "91rem",
+        134: "92rem",
+        136: "93rem",
+        138: "94rem",
+        140: "95rem",
+        260: "110rem",
+      },
+    },
+  },
+  plugins: [],
+};
