@@ -232,9 +232,9 @@ export function Dashboard() {
 
   useEffect(() => {
     if (uidContextTeacher === user?.uid) {
-      buscarTurmasParaProfessores(uidContextGeral);
+      buscarTurmasParaProfessores(user?.uid);
     }
-  }, [buscarTurmasParaProfessores, uidContextGeral, uidContextTeacher]);
+  }, [buscarTurmasParaProfessores, user?.uid, uidContextTeacher]);
 
   const cadastroTurmas = async (data: FormDataClass) => {
     try {
