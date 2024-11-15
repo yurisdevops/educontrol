@@ -194,9 +194,9 @@ export function Dashboard() {
 
   useEffect(() => {
     if (uidContextInstitution === user?.uid) {
-      buscarTurmasPorInstituicao(uidContextGeral);
+      buscarTurmasPorInstituicao(uidContextInstitution);
     }
-  }, [buscarTurmasPorInstituicao, uidContextGeral]);
+  }, [buscarTurmasPorInstituicao, uidContextInstitution]);
 
   const buscarTurmasParaProfessores = async (institutionId: string) => {
     const turmasRef = doc(db, "teachers", institutionId);
@@ -232,9 +232,9 @@ export function Dashboard() {
 
   useEffect(() => {
     if (uidContextTeacher === user?.uid) {
-      buscarTurmasParaProfessores(user?.uid);
+      buscarTurmasParaProfessores(uidContextGeral);
     }
-  }, [buscarTurmasParaProfessores, user?.uid, uidContextTeacher]);
+  }, [buscarTurmasParaProfessores, uidContextGeral, uidContextTeacher]);
 
   const cadastroTurmas = async (data: FormDataClass) => {
     try {
@@ -243,7 +243,7 @@ export function Dashboard() {
       }
       const uidTurma: string = uuidV4();
 
-      const dadosRefTurmas = collection(db, "institutions", userUid, "classes");
+      const dadosRefTurmas = collection(db, "institutions", uidContextInstitution, "classes");
 
       await addDoc(dadosRefTurmas, {
         nameClass: data.nameClass,
@@ -259,7 +259,7 @@ export function Dashboard() {
   const deleteTurma = useCallback(
     async (uid: string) => {
       try {
-        const turmaRef = doc(db, "institutions", userUid, "classes", uid);
+        const turmaRef = doc(db, "institutions", uidContextInstitution, "classes", uid);
         await deleteDoc(turmaRef);
       } catch (error) {
         console.error("Erro ao excluir documento:", error);
