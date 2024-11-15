@@ -16,7 +16,7 @@ export function AdressForm({ register, errors }: AddressFormProps) {
           </label>
           <Input
             type="text"
-            placeholder="ex: 08:00 às 17hrs"
+            placeholder="ex: RJ"
             name="openingHours"
             register={register}
             error={errors.openingHours?.message}
@@ -28,7 +28,7 @@ export function AdressForm({ register, errors }: AddressFormProps) {
           </label>
           <Input
             type="text"
-            placeholder="ex: 23066-070"
+            placeholder="ex: Rio de Janeiro"
             name="neighborhood"
             register={register}
             error={errors.neighborhood?.message}
@@ -43,7 +43,7 @@ export function AdressForm({ register, errors }: AddressFormProps) {
           </label>
           <Input
             type="text"
-            placeholder="ex: Rio de Janeiro"
+            placeholder="ex: Campo Grande"
             name="county"
             register={register}
             error={errors.county?.message}

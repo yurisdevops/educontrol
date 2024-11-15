@@ -66,7 +66,7 @@ const profileSchema = z.object({
   cpf: z.string().refine(validarCPF, {
     message: "CPF inválido",
   }),
-  registration: z.string().min(1, "CNE é obrigatória"),
+  registration: z.string().min(1, "Registro Nacional é obrigatório"),
   instituionName: z.string().min(1, "Instituição é obrigatório"),
   placeOfBirth: z.string().min(1, "Naturalidade é obrigatória"),
   cep: z.string().min(1, "CEP é obrigatório"),

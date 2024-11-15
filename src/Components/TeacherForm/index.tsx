@@ -75,7 +75,7 @@ export function TeacherForm({
         <div className="flex flex-1 gap-4 items-center">
           <div className="flex-1">
             <label htmlFor="registration" className="ml-1 text-base">
-              Nº CNE:
+              Registro Nacional:
             </label>
             <Input
               type="text"
