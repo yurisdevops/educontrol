@@ -1,4 +1,3 @@
-import { ReactNode } from "react";
 import { RegisterOptions, UseFormRegister } from "react-hook-form";
 
 export type InputProps = {

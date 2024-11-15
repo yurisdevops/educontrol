@@ -33,7 +33,7 @@ export function CalendarDisplay() {
   const [, setLoading] = useState(true); // Estado que controla a visibilidade do loading spinner
   const [calendarVisible, setCalendarVisible] = useState(false); // Estado que controla a visibilidade do calendário
   const [eventsVisible, setEventsVisible] = useState(false); // Estado que controla a visibilidade da lista de eventos
-  const [eventoUpdated, setEventoUpdated] = useState(false);
+  const [, setEventoUpdated] = useState(false);
 
   const [isAdmin, setIsAdmin] = useState<boolean>(false);
 
