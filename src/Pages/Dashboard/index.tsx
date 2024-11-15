@@ -243,7 +243,12 @@ export function Dashboard() {
       }
       const uidTurma: string = uuidV4();
 
-      const dadosRefTurmas = collection(db, "institutions", uidContextInstitution, "classes");
+      const dadosRefTurmas = collection(
+        db,
+        "institutions",
+        uidContextInstitution,
+        "classes"
+      );
 
       await addDoc(dadosRefTurmas, {
         nameClass: data.nameClass,
@@ -259,7 +264,13 @@ export function Dashboard() {
   const deleteTurma = useCallback(
     async (uid: string) => {
       try {
-        const turmaRef = doc(db, "institutions", uidContextInstitution, "classes", uid);
+        const turmaRef = doc(
+          db,
+          "institutions",
+          uidContextInstitution,
+          "classes",
+          uid
+        );
         await deleteDoc(turmaRef);
       } catch (error) {
         console.error("Erro ao excluir documento:", error);
@@ -285,7 +296,7 @@ export function Dashboard() {
       const dadosRefTeacher = collection(
         db,
         "institutions",
-        uidContextGeral,
+        uidContextInstitution,
         "uidTeachers"
       );
 
