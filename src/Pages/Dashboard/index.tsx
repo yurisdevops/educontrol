@@ -138,23 +138,13 @@ export function Dashboard() {
       }
       return false;
     };
-
-    try {
-      const tipoEncontrado =
-        (await buscarTipoInstituicao()) || (await buscarTipoProfessor());
-      if (!tipoEncontrado) {
-        throw new Error("Usuário não encontrado em nenhuma das coleções.");
-      }
-    } catch (error) {
-      console.error("Erro ao obter status:", error);
-    }
   }, []);
 
   useEffect(() => {
     if (user) {
       buscarDadosTipoUser(user.uid);
     }
-  }, [user, buscarDadosTipoUser]);
+  }, [user.uid, buscarDadosTipoUser]);
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
