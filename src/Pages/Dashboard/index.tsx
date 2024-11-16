@@ -299,7 +299,7 @@ export function Dashboard() {
     }
   }, [auth]);
 
-  const salvarUidProfessor = async () => {
+  const salvarUidProfessor = async (uid: string) => {
     try {
       if (!user?.uid) {
         throw new Error("User não encontrado.");
@@ -313,7 +313,7 @@ export function Dashboard() {
       );
 
       await addDoc(dadosRefTeacher, {
-        uid: uidContextTeacher,
+        uid: uid,
       });
 
       console.log("Uid Salvo");
@@ -321,6 +321,13 @@ export function Dashboard() {
       console.error("Erro ao adicionar uid:", error);
     }
   };
+
+  // useEffect para salvar o UID do professor quando uidContextTeacher mudar
+  useEffect(() => {
+    if (uidContextTeacher) {
+      salvarUidProfessor(uidContextTeacher);
+    }
+  }, [uidContextTeacher]);
 
   const cadastroProfessor = async (data: FormDataRegisterTeachers) => {
     setLoading(true);
@@ -332,12 +339,14 @@ export function Dashboard() {
         data.password
       );
       const dadostUsuario = autentificacaoUsuario.user;
-      setUidContextTeacher(dadostUsuario?.uid);
+      const novoUid = dadostUsuario?.uid; // Captura o novo UID
+      setUidContextTeacher(novoUid); // Atualiza o UID do professor
       await updateProfile(dadostUsuario, {
         displayName: data.name,
       });
 
-      salvarUidProfessor();
+      await salvarUidProfessor(novoUid); // Salva o UID imediatamente após a criação
+
       reset();
 
       setTimeout(() => {
