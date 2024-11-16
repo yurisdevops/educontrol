@@ -188,6 +188,13 @@ export function Dashboard() {
 
       // Ordenar se necessário
       dadosTurmas.sort((a, b) => parseInt(a.nameClass) - parseInt(b.nameClass));
+
+      const totalMaxStudents = dadosTurmas.reduce((accum, turma) => {
+        return accum + (turma.maxStudent || 0); // Adiciona maxStudent a soma, considera 0 se maxStudent for indefinido
+      }, 0);
+
+      // Aqui você pode fazer o que quiser com totalMaxStudents, como armazenar em um estado ou log
+      console.log(`Total de maxStudents: ${totalMaxStudents}`);
       setClasses(dadosTurmas);
     });
   };
