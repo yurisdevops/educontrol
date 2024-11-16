@@ -323,11 +323,6 @@ export function Dashboard() {
   };
 
   // useEffect para salvar o UID do professor quando uidContextTeacher mudar
-  useEffect(() => {
-    if (uidContextTeacher) {
-      salvarUidProfessor(uidContextTeacher);
-    }
-  }, [uidContextTeacher]);
 
   const cadastroProfessor = async (data: FormDataRegisterTeachers) => {
     setLoading(true);
