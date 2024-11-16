@@ -30,7 +30,7 @@ import {
 import { v4 as uuidV4 } from "uuid";
 
 import { ImProfile } from "react-icons/im";
-import { useCallback, useEffect, useState, ChangeEvent } from "react";
+import { useCallback, useEffect, useState, ChangeEvent, useMemo } from "react";
 import {
   createUserWithEmailAndPassword,
   getAuth,
@@ -105,6 +105,7 @@ export function Dashboard() {
   const [isAdmin, setIsAdmin] = useState<boolean>(false);
   const [loading, setLoading] = useState(false);
   const [isImagens, setIsImagens] = useState<ImagensEventosProps[]>([]);
+  const [maxAlunos, setMaxAlunos] = useState<number>();
 
   const [classes, setClasses] = useState<
     Array<{ nameClass: string; uid: string; maxStudent: number }>
@@ -186,18 +187,22 @@ export function Dashboard() {
         maxStudent: doc.data().maxStudent,
       }));
 
-      // Ordenar se necessário
       dadosTurmas.sort((a, b) => parseInt(a.nameClass) - parseInt(b.nameClass));
 
-      // const totalMaxStudents = dadosTurmas.reduce((accum, turma) => {
-      //   return accum + (turma.maxStudent || 0); // Adiciona maxStudent a soma, considera 0 se maxStudent for indefinido
-      // }, 0);
-
-      // // Aqui você pode fazer o que quiser com totalMaxStudents, como armazenar em um estado ou log
-      // console.log(`Total de maxStudents: ${totalMaxStudents}`);
       setClasses(dadosTurmas);
     });
   };
+
+  const totalMaxStudents = useMemo(() => {
+    return classes.reduce((accum, turma) => {
+      return accum + (Number(turma.maxStudent) || 0);
+    }, 0);
+  }, [classes]);
+
+  useEffect(() => {
+    setMaxAlunos(totalMaxStudents);
+    console.log(`MaxAlunos atualizado para: ${totalMaxStudents}`); // Log após a atualização
+  }, [totalMaxStudents]);
 
   useEffect(() => {
     if (uidContextInstitution === user?.uid) {
@@ -509,7 +514,9 @@ export function Dashboard() {
                 <div className="border-2 border-greenEdu xl:absolute  rounded-b-xl w-full xl:w-85 xl:h-32 mt-8 xl:mt-44">
                   <HeaderForm children={"N° Máximo ALunos"} />
                   <div className="flex justify-center items-center p-2 xl:mt-7">
-                    <span className="text-greenEdu text-3xl font-bold">38</span>
+                    <span className="text-greenEdu text-3xl font-bold">
+                      {maxAlunos}
+                    </span>
                   </div>
                 </div>
               </div>
@@ -669,7 +676,9 @@ export function Dashboard() {
                 <div className="border-2 border-greenEdu absolute rounded-b-xl w-85 xl:w-85 xl:h-32 mt-32 xl:mt-32">
                   <HeaderForm children={"N° Máximo ALunos"} />
                   <div className="flex justify-center items-center p-2 xl:mt-7">
-                    <span className="text-greenEdu text-3xl font-bold">38</span>
+                    <span className="text-greenEdu text-3xl font-bold">
+                      {maxAlunos}
+                    </span>
                   </div>
                 </div>
                 <div className="border-greenEdu w-85 xl:absolute xl:w-85 xl:h-72 xl:mt-72 mt-40 border-2 rounded-b-xl pb-10 ">
