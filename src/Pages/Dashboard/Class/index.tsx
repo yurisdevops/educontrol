@@ -114,8 +114,10 @@ export function Class() {
     },
     []
   );
+
   useEffect(() => {
     buscarTurmasUids(user?.uid);
+    console.log(user);
   }, [buscarTurmasUids, user?.uid]);
 
   const addStudentToClass = useCallback(
