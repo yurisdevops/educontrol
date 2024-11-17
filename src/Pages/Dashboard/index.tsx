@@ -209,10 +209,10 @@ export function Dashboard() {
   }, [totalMaxStudents]);
 
   useEffect(() => {
-    if (uidContextInstitution === user?.uid) {
-      searchClassesByInstitution(uidContextInstitution);
+    if (uidContextGeral === user?.uid) {
+      searchClassesByInstitution(uidContextGeral);
     }
-  }, [searchClassesByInstitution, uidContextInstitution]);
+  }, [searchClassesByInstitution, uidContextGeral]);
 
   const searchClassesByTeachers = async (institutionId: string) => {
     const classesRefData = doc(db, "teachers", institutionId);
