@@ -43,6 +43,7 @@ type FormDataProfileInstitutions = z.infer<typeof profileinstitutionSchema>;
 
 export function ProfileInstituion() {
   const navigate = useNavigate();
+  const { setUidContextInstitution } = useAuth();
 
   const {
     register,
@@ -64,6 +65,7 @@ export function ProfileInstituion() {
 
       await setDoc(doc(db, "institutions", uid), dataSave);
       console.log("Dados do perfil salvos com sucesso!");
+      setUidContextInstitution(uid);
       navigate("/dashboard", { replace: true });
     } else {
       console.log("Nenhum usuário autenticado encontrado!");
