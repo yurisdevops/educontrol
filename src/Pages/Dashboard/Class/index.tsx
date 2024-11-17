@@ -17,6 +17,7 @@ import { db } from "../../../services/firebaseConnection";
 import { v4 as uuidV4 } from "uuid";
 
 import { useAuth } from "../../../Context/AuthContext";
+import toast from "react-hot-toast";
 
 const studentSchema = z.object({
   name: z.string().min(1, "Nome é obrigatório"),
@@ -118,6 +119,10 @@ export function Class() {
         console.log("Dados a serem salvos:", dataSave);
 
         await addDoc(studentsCollectionRef, dataSave);
+
+        setTimeout(() => {
+          toast.success("Aluno Adicionado")
+        }, 1000);
         console.log("Aluno adicionado com sucesso!");
 
         setStudents((prevStudents) => {
