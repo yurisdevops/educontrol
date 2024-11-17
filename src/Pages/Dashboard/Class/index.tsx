@@ -121,6 +121,7 @@ export function Class() {
         console.log("Aluno adicionado com sucesso!");
 
         setNewStudent(false);
+        await searchStudents;
         reset();
       } catch (error) {
         console.error("Erro ao adicionar aluno à turma:", error);
@@ -144,11 +145,12 @@ export function Class() {
         const accessDataStudents = await getDocs(dataStudentsRef);
 
         if (!accessDataStudents.empty) {
-          const dadosAlunos: { id: string }[] = [];
+          const dataStudents: { id: string; name?: string | any }[] = [];
           accessDataStudents.forEach((doc) => {
-            dadosAlunos.push({ id: doc.id, ...doc.data() });
+            dataStudents.push({ id: doc.id, ...doc.data() });
           });
-          setStudents(dadosAlunos);
+          dataStudents.sort((a, b) => a.name.localeCompare(b.name));
+          setStudents(dataStudents);
         }
       } catch (error) {
         console.error("Erro ao buscar alunos:", error);
