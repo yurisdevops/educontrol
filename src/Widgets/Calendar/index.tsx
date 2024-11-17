@@ -95,7 +95,7 @@ export function CalendarDisplay() {
       const dataRefEvents = collection(
         db,
         "institutions",
-        uidContextInstitution,
+        uidContextGeral,
         "events"
       );
 
