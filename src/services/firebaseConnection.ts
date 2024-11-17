@@ -24,6 +24,7 @@ const db = getFirestore(app);
 // Obtendo uma instância do Auth (autenticação) associada ao aplicativo
 const auth = getAuth(app);
 
+
 // Obtendo uma instância do Storage (armazenamento de arquivos) associada ao aplicativo
 const storage = getStorage(app);
 const functions = getFunctions(app);

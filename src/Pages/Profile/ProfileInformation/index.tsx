@@ -44,7 +44,7 @@ export function ProfileInformation() {
   const [loading, setLoading] = useState(true);
   const [isEditing, setIsEditing] = useState(false);
   const [uidTeacher, setUidTeacher] = useState<UidProps[] | any>([]);
-  const [nameTeacher, setNameTeacher] = useState<
+  const [teachersData, setTeachersData] = useState<
     Array<{
       uid: string;
       name: string;
@@ -66,11 +66,10 @@ export function ProfileInformation() {
     mode: "onChange",
   });
 
-  const buscarUidTeachers = async () => {
+  const searchUidTeachers = async () => {
     try {
       setLoading(true);
 
-      // Verifique se uidContextGeral é válido
       if (!uidContextGeral) {
         throw new Error("O uidContextGeral não está definido.");
       }
@@ -81,8 +80,6 @@ export function ProfileInformation() {
         uidContextGeral,
         "uidTeachers"
       );
-
-      console.log(uidTeachersRef);
 
       const snapshot = await getDocs(uidTeachersRef);
 
@@ -100,36 +97,15 @@ export function ProfileInformation() {
     }
   };
   useEffect(() => {
-    buscarUidTeachers();
+    searchUidTeachers();
   }, [uidContextGeral]);
-  console.log(uidContextGeral);
-  console.log(nameTeacher);
 
-  // useEffect(() => {
-  //   const fetchProfile = async () => {
-  //     const user = auth.currentUser;
-  //     if (user) {
-  //       const userDocRef = doc(db, "teachers", uidTeacher.updateProfile);
-  //       const userDoc = await getDoc(userDocRef);
-  //       if (userDoc.exists()) {
-  //         const data = userDoc.data() as FormData;
-  //         for (const [key, value] of Object.entries(data)) {
-  //           setValue(key as keyof FormDataProfileInformation, value);
-  //         }
-  //       }
-  //     }
-  //     setLoading(false);
-  //   };
-  //   fetchProfile();
-  // }, [setValue]);
-
-  const buscarDocsProfile = async () => {
+  const searchDocsProfiles = async () => {
     try {
-      const dadosTeachersPromises = uidTeacher.map(
+      const teachersPromisesData = uidTeacher.map(
         async (teacher: { uid: string }) => {
-          const dadosTeachersRef = doc(db, "teachers", teacher.uid);
-          const teacherDoc = await getDoc(dadosTeachersRef);
-          console.log(dadosTeachersRef);
+          const teachersRefData = doc(db, "teachers", teacher.uid);
+          const teacherDoc = await getDoc(teachersRefData);
 
           if (teacherDoc.exists()) {
             return { uid: teacher.uid, ...teacherDoc.data() };
@@ -141,11 +117,11 @@ export function ProfileInformation() {
         }
       );
 
-      const dadosTeachers = await Promise.all(dadosTeachersPromises);
+      const teachersData = await Promise.all(teachersPromisesData);
 
-      const validTeachers = dadosTeachers.filter((teacher) => teacher); // Remove qualquer resultado undefined
+      const validTeachers = teachersData.filter((teacher) => teacher);
 
-      setNameTeacher(validTeachers);
+      setTeachersData(validTeachers);
     } catch (error) {
       console.error("Erro ao buscar dados dos professores:", error);
     }
@@ -153,8 +129,7 @@ export function ProfileInformation() {
 
   useEffect(() => {
     if (uidTeacher.length > 0) {
-      buscarDocsProfile();
-      console.log(nameTeacher);
+      searchDocsProfiles();
     }
   }, [uidTeacher]);
 
@@ -163,14 +138,13 @@ export function ProfileInformation() {
     setIsEditing(true);
 
     for (const key in teacher) {
-      setValue(key as keyof FormDataProfileInformation, teacher[key]); // Assume que a estrutura do professor se alinha com o que você registrou no formulário
+      setValue(key as keyof FormDataProfileInformation, teacher[key]);
     }
   };
 
   const onSubmit = async (data: FormDataProfileInformation) => {
     try {
       const teacherDocRef = doc(db, "teachers", selectedTeacher.uid);
-      console.log(teacherDocRef);
 
       await updateDoc(teacherDocRef, data);
       alert("Perfil atualizado com sucesso!");
@@ -213,7 +187,7 @@ export function ProfileInformation() {
             className=" text-blackEdu"
             id="teacherSelect"
             onChange={(e) => {
-              const selectedTeacher = nameTeacher.find(
+              const selectedTeacher = teachersData.find(
                 (teacher) => teacher.uid === e.target.value
               );
               if (selectedTeacher) {
@@ -226,7 +200,7 @@ export function ProfileInformation() {
               Selecione um professor
             </option>
             {!loading ? (
-              nameTeacher.map((teacher: any) => (
+              teachersData.map((teacher: any) => (
                 <option
                   className="bg-greenEdu"
                   key={teacher.uid}

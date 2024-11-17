@@ -3,9 +3,8 @@ import { TitleBar } from "../../../Components/TitleBar";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { db, auth } from "../../../services/firebaseConnection";
+import { db } from "../../../services/firebaseConnection";
 import {
-
   collection,
   doc,
   getDoc,
@@ -118,7 +117,6 @@ export function ProfileTeacher() {
       }
     }
   };
-  console.log(auth.currentUser);
 
   const handleLogout = async () => {
     try {
@@ -129,32 +127,36 @@ export function ProfileTeacher() {
     }
   };
 
-  const getInstitutionData = async (institutionId: string) => {
+  const getDataInstitution = async (institutionId: string) => {
     try {
-      const institutionRef = doc(db, "institutions", institutionId);
-      const institutionSnap = await getDoc(institutionRef);
-      if (institutionSnap.exists()) {
-        setInstitutionName(institutionSnap.data()?.name || null);
+      const institutionRefData = doc(db, "institutions", institutionId);
+      const snapshotInstitution = await getDoc(institutionRefData);
+      if (snapshotInstitution.exists()) {
+        setInstitutionName(snapshotInstitution.data()?.name || null);
       }
     } catch (error) {
       console.error("Erro ao obter dados da instituição:", error);
     }
   };
 
-  const buscarTurmasPorInstituicao = (institutionId: string) => {
-    const turmasRef = collection(db, "institutions", institutionId, "classes");
-    console.log(turmasRef);
+  const searchClassesByInstitution = (institutionId: string) => {
+    const classesRefData = collection(
+      db,
+      "institutions",
+      institutionId,
+      "classes"
+    );
+    console.log(classesRefData);
 
-    return onSnapshot(turmasRef, (snapshot) => {
-      const dadosTurmas = snapshot.docs.map((doc) => ({
+    return onSnapshot(classesRefData, (snapshot) => {
+      const dataClasses = snapshot.docs.map((doc) => ({
         nameClass: doc.data().nameClass,
         uid: doc.id,
         maxStudent: doc.data().maxStudent,
       }));
 
-      // Ordenar se necessário
-      dadosTurmas.sort((a, b) => parseInt(a.nameClass) - parseInt(b.nameClass));
-      setClasses(dadosTurmas);
+      dataClasses.sort((a, b) => parseInt(a.nameClass) - parseInt(b.nameClass));
+      setClasses(dataClasses);
     });
   };
 
@@ -171,17 +173,17 @@ export function ProfileTeacher() {
   };
 
   useEffect(() => {
-    buscarTurmasPorInstituicao(uidContextGeral);
+    searchClassesByInstitution(uidContextGeral);
     return () => {
-      buscarTurmasPorInstituicao(uidContextGeral);
+      searchClassesByInstitution(uidContextGeral);
     };
   }, [uidContextGeral]);
 
   useEffect(() => {
     if (uidContextGeral) {
-      getInstitutionData(uidContextGeral);
+      getDataInstitution(uidContextGeral);
     }
-  }, [getInstitutionData, uidContextGeral]);
+  }, [getDataInstitution, uidContextGeral]);
 
   return (
     <main>

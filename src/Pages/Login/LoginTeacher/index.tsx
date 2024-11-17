@@ -36,38 +36,35 @@ export function LoginTeacher() {
   });
 
   const handleNavigation = async (uid: string) => {
-    const userDocRefTeachers = doc(db, "teachers", uid);
-    const userDocRefInstitution = doc(db, "institutions", uid);
+    try {
+      const userDocRefTeachers = doc(db, "teachers", uid);
+      const userDocRefInstitution = doc(db, "institutions", uid);
 
-    const [userDocTeachers, userDocInstitution] = await Promise.all([
-      getDoc(userDocRefTeachers),
-      getDoc(userDocRefInstitution),
-    ]);
+      const [userDocTeachers, userDocInstitution] = await Promise.all([
+        getDoc(userDocRefTeachers),
+        getDoc(userDocRefInstitution),
+      ]);
 
-    if (userDocTeachers.exists() || userDocInstitution.exists()) {
-      setTimeout(() => {
-        // navigate(
-        //   userDocTeachers.exists() ? "/dashboard" : "/loginInstitution",
-        //   {
-        //     replace: true,
-        //   }
-        // );
+      // Verifica se o documento do professor ou da instituição existe
+      if (userDocTeachers.exists() || userDocInstitution.exists()) {
         if (userDocTeachers.exists()) {
-          navigate("/dashboard", { replace: true });
           toast.success("Logado com sucesso");
+          navigate("/dashboard", { replace: true });
         } else {
-          navigate("/loginInstitution", { replace: true });
           toast.error("Erro ao logar");
+          navigate("/loginInstitution", { replace: true });
         }
-      }, 1500);
-    } else {
-      navigate("/profileTeacher", { replace: true });
+      } else {
+        navigate("/profileTeacher", { replace: true });
+      }
+    } catch (error) {
+      console.error("Erro ao buscar documentos:", error);
+      toast.error("Ocorreu um erro ao tentar logar. Tente novamente.");
     }
   };
 
   const onSubmit = async (data: FormDataLoginTeachers) => {
-    setLoading(true); // Set loading to true
-
+    setLoading(true);
     try {
       const { user } = await signInWithEmailAndPassword(
         auth,
@@ -82,7 +79,7 @@ export function LoginTeacher() {
       );
       console.error("Login error:", error);
     } finally {
-      setLoading(false); // Reset loading state
+      setLoading(false);
     }
   };
 

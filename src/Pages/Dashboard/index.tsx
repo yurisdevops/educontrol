@@ -114,36 +114,36 @@ export function Dashboard() {
     Array<{ nameClass: string; uid: string; maxStudent: number }>
   >([]);
 
-  const buscarDadosTipoUser = useCallback(async (uid: string) => {
+  const fetchDataTypeUser = useCallback(async (uid: string) => {
     if (typeof uid !== "string") {
       throw new Error("O ID fornecido não é uma string válida");
     }
 
-    const buscarTipoInstituicao = async () => {
-      const dadosRefInstituicao = doc(db, "institutions", uid);
-      const dadosInstituicao = await getDoc(dadosRefInstituicao);
-      if (dadosInstituicao.exists()) {
-        setIsAdmin(dadosInstituicao.data()?.userTypeAdmin);
+    const searchTypeInstitution = async () => {
+      const dataRefInstituicao = doc(db, "institutions", uid);
+      const dataInstitution = await getDoc(dataRefInstituicao);
+      if (dataInstitution.exists()) {
+        setIsAdmin(dataInstitution.data()?.userTypeAdmin);
         return true;
       }
       return false;
     };
 
-    const buscarTipoProfessor = async () => {
-      const dadosRefProfessor = doc(db, "teachers", uid);
-      const dadosProfessor = await getDoc(dadosRefProfessor);
+    const searchTypeTeacher = async () => {
+      const dataRefProfessor = doc(db, "teachers", uid);
+      const dataTeacher = await getDoc(dataRefProfessor);
 
-      if (dadosProfessor.exists()) {
-        setIsUser(dadosProfessor.data()?.userTypeNormal);
+      if (dataTeacher.exists()) {
+        setIsUser(dataTeacher.data()?.userTypeNormal);
         return true;
       }
       return false;
     };
 
     try {
-      const tipoEncontrado =
-        (await buscarTipoInstituicao()) || (await buscarTipoProfessor());
-      if (!tipoEncontrado) {
+      const typeFound =
+        (await searchTypeInstitution()) || (await searchTypeTeacher());
+      if (!typeFound) {
         throw new Error("Usuário não encontrado em nenhuma das coleções.");
       }
     } catch (error) {
@@ -153,9 +153,9 @@ export function Dashboard() {
 
   useEffect(() => {
     if (user) {
-      buscarDadosTipoUser(user.uid);
+      fetchDataTypeUser(user.uid);
     }
-  }, [user.uid, buscarDadosTipoUser]);
+  }, [user.uid, fetchDataTypeUser]);
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
@@ -177,19 +177,24 @@ export function Dashboard() {
     }
   }, [userUid]);
 
-  const buscarTurmasPorInstituicao = (institutionId: string) => {
-    const turmasRef = collection(db, "institutions", institutionId, "classes");
+  const searchClassesByInstitution = (institutionId: string) => {
+    const classesRefData = collection(
+      db,
+      "institutions",
+      institutionId,
+      "classes"
+    );
 
-    return onSnapshot(turmasRef, (snapshot) => {
-      const dadosTurmas = snapshot.docs.map((doc) => ({
+    return onSnapshot(classesRefData, (snapshot) => {
+      const dataClasses = snapshot.docs.map((doc) => ({
         nameClass: doc.data().nameClass,
         uid: doc.id,
         maxStudent: doc.data().maxStudent,
       }));
 
-      dadosTurmas.sort((a, b) => parseInt(a.nameClass) - parseInt(b.nameClass));
+      dataClasses.sort((a, b) => parseInt(a.nameClass) - parseInt(b.nameClass));
 
-      setClasses(dadosTurmas);
+      setClasses(dataClasses);
     });
   };
 
@@ -201,26 +206,25 @@ export function Dashboard() {
 
   useEffect(() => {
     setMaxAlunos(totalMaxStudents);
-    console.log(`MaxAlunos atualizado para: ${totalMaxStudents}`); // Log após a atualização
   }, [totalMaxStudents]);
 
   useEffect(() => {
     if (uidContextInstitution === user?.uid) {
-      buscarTurmasPorInstituicao(uidContextInstitution);
+      searchClassesByInstitution(uidContextInstitution);
     }
-  }, [buscarTurmasPorInstituicao, uidContextInstitution]);
+  }, [searchClassesByInstitution, uidContextInstitution]);
 
-  const buscarTurmasParaProfessores = async (institutionId: string) => {
-    const turmasRef = doc(db, "teachers", institutionId);
+  const searchClassesByTeachers = async (institutionId: string) => {
+    const classesRefData = doc(db, "teachers", institutionId);
 
     try {
-      const docSnap = await getDoc(turmasRef);
-      if (docSnap.exists()) {
-        const classes = docSnap.data().classes;
+      const snapshotClassesData = await getDoc(classesRefData);
+      if (snapshotClassesData.exists()) {
+        const classes = snapshotClassesData.data().classes;
         const classesArray = Array.isArray(classes) ? classes : [];
 
         // Transformar todas as classes em objetos com nameClass, uid e maxStudents
-        const classesObjetos = classesArray.map((classe) => {
+        const classesObjects = classesArray.map((classe) => {
           const [nameClass, uid, maxStudent] = classe.split(" "); // Dividindo a string em partes
           return {
             nameClass: nameClass, // O primeiro elemento
@@ -229,9 +233,9 @@ export function Dashboard() {
           };
         });
 
-        setClassesTeachers(classesObjetos); // Exibindo o resultado como objetos
+        setClassesTeachers(classesObjects); // Exibindo o result como objetos
 
-        return classesObjetos; // Retornando o novo array de objetos
+        return classesObjects; // Retornando o novo array de objetos
       } else {
         console.log("Nenhum documento encontrado com esse ID.");
         return [];
@@ -244,28 +248,28 @@ export function Dashboard() {
 
   useEffect(() => {
     if (uidContextTeacher === user?.uid) {
-      buscarTurmasParaProfessores(user?.uid);
+      searchClassesByTeachers(user?.uid);
     }
-  }, [buscarTurmasParaProfessores, user?.uid, uidContextTeacher]);
+  }, [searchClassesByTeachers, user?.uid, uidContextTeacher]);
 
-  const cadastroTurmas = async (data: FormDataClass) => {
+  const registrationClasses = async (data: FormDataClass) => {
     try {
       if (!userUid) {
         throw new Error("ID da instituição não encontrado.");
       }
-      const uidTurma: string = uuidV4();
+      const uidClass: string = uuidV4();
 
-      const dadosRefTurmas = collection(
+      const classesRefData = collection(
         db,
         "institutions",
         uidContextInstitution,
         "classes"
       );
 
-      await addDoc(dadosRefTurmas, {
+      await addDoc(classesRefData, {
         nameClass: data.nameClass,
         maxStudent: data.maxStudent,
-        uid: uidTurma,
+        uid: uidClass,
       });
       reset();
     } catch (error) {
@@ -273,17 +277,17 @@ export function Dashboard() {
     }
   };
 
-  const deleteTurma = useCallback(
+  const deleteClass = useCallback(
     async (uid: string) => {
       try {
-        const turmaRef = doc(
+        const classesRefData = doc(
           db,
           "institutions",
           uidContextInstitution,
           "classes",
           uid
         );
-        await deleteDoc(turmaRef);
+        await deleteDoc(classesRefData);
       } catch (error) {
         console.error("Erro ao excluir documento:", error);
       }
@@ -299,20 +303,20 @@ export function Dashboard() {
     }
   }, [auth]);
 
-  const salvarUidProfessor = async (uid: string) => {
+  const saveUidTeacher = async (uid: string) => {
     try {
       if (!user?.uid) {
         throw new Error("User não encontrado.");
       }
 
-      const dadosRefTeacher = collection(
+      const dataRefTeacherUid = collection(
         db,
         "institutions",
         uidContextInstitution,
         "uidTeachers"
       );
 
-      await addDoc(dadosRefTeacher, {
+      await addDoc(dataRefTeacherUid, {
         uid: uid,
       });
 
@@ -322,25 +326,23 @@ export function Dashboard() {
     }
   };
 
-  // useEffect para salvar o UID do professor quando uidContextTeacher mudar
-
-  const cadastroProfessor = async (data: FormDataRegisterTeachers) => {
+  const registrationTeacher = async (data: FormDataRegisterTeachers) => {
     setLoading(true);
 
     try {
-      const autentificacaoUsuario = await createUserWithEmailAndPassword(
+      const authenticationUser = await createUserWithEmailAndPassword(
         auth,
         data.email,
         data.password
       );
-      const dadostUsuario = autentificacaoUsuario.user;
-      const novoUid = dadostUsuario?.uid; // Captura o novo UID
-      setUidContextTeacher(novoUid); // Atualiza o UID do professor
-      await updateProfile(dadostUsuario, {
+      const datatUser = authenticationUser.user;
+      const newUid = datatUser?.uid; // Captura o novo UID
+      setUidContextTeacher(newUid); // Atualiza o UID do professor
+      await updateProfile(datatUser, {
         displayName: data.name,
       });
 
-      await salvarUidProfessor(novoUid); // Salva o UID imediatamente após a criação
+      await saveUidTeacher(newUid); // Salva o UID imediatamente após a criação
 
       reset();
 
@@ -355,7 +357,7 @@ export function Dashboard() {
     }
   };
 
-  const mudancaArquivo = (e: ChangeEvent<HTMLInputElement>) => {
+  const changeFile = (e: ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
       const image = e.target.files[0];
       if (
@@ -363,7 +365,7 @@ export function Dashboard() {
         image.type === "image/png" ||
         "image/webp"
       ) {
-        uploadImagem(image);
+        uploadImage(image);
         setTimeout(() => {
           toast.success("Upload Realizado!");
         }, 1500);
@@ -374,38 +376,38 @@ export function Dashboard() {
     }
   };
 
-  const uploadImagem = (image: File) => {
+  const uploadImage = (image: File) => {
     if (!user?.uid) {
       toast.error("Você precisa estar logado para fazer essa ação!");
       return;
     }
 
-    const uidLogado = user?.uid;
-    const uidImagem = uuidV4();
+    const uidLogged = user?.uid;
+    const uidImage = uuidV4();
 
-    const uploadRef = ref(storage, `imagens/${uidLogado}/${uidImagem}`);
+    const uploadRefImage = ref(storage, `imagens/${uidLogged}/${uidImage}`);
 
-    uploadBytes(uploadRef, image).then((snapshot) => {
+    uploadBytes(uploadRefImage, image).then((snapshot) => {
       getDownloadURL(snapshot.ref).then((downloadURL) => {
-        const imagem = {
-          uid: uidLogado,
+        const dataImage = {
+          uid: uidLogged,
           id: user?.uid,
-          name: uidImagem,
+          name: uidImage,
           previewUrl: URL.createObjectURL(image),
           url: downloadURL,
         };
-        setIsImagens((imagens) => [...imagens, imagem]);
+        setIsImagens((imagens) => [...imagens, dataImage]);
       });
     });
   };
 
-  const pegarImagens = useCallback(() => {
-    const imagesRef = ref(storage, `imagens/${uidContextGeral}`);
+  const catchImages = useCallback(() => {
+    const catchImagesRef = ref(storage, `imagens/${uidContextGeral}`);
 
-    listAll(imagesRef)
-      .then(async (resultado) => {
+    listAll(catchImagesRef)
+      .then(async (result) => {
         const urls = await Promise.all(
-          resultado.items.map(async (item) => {
+          result.items.map(async (item) => {
             const url = await getDownloadURL(item);
             return { uid: item.name, name: item.name, url };
           })
@@ -417,13 +419,13 @@ export function Dashboard() {
       });
   }, [uidContextGeral]);
 
-  const deletarImagem = useCallback(
+  const deleteImage = useCallback(
     async (imagem: ImagensEventosProps) => {
-      const imagemStorage = `imagens/${user?.uid}/${imagem.name}`;
-      const storageRefImagem = ref(storage, imagemStorage);
+      const catchImagesStorageRef = `imagens/${user?.uid}/${imagem.name}`;
+      const imagesStorageRef = ref(storage, catchImagesStorageRef);
 
       try {
-        await deleteObject(storageRefImagem);
+        await deleteObject(imagesStorageRef);
         setIsImagens((imagens) =>
           imagens.filter((image) => image.url !== imagem.url)
         );
@@ -439,8 +441,8 @@ export function Dashboard() {
   );
 
   useEffect(() => {
-    pegarImagens();
-  }, [pegarImagens]);
+    catchImages();
+  }, [catchImages]);
 
   return (
     <main className="max-h-full">
@@ -568,7 +570,7 @@ export function Dashboard() {
                           <button
                             className="hover:text-redEdu"
                             onClick={() => {
-                              deleteTurma(classInfo.uid);
+                              deleteClass(classInfo.uid);
                             }}
                           >
                             X
@@ -583,7 +585,7 @@ export function Dashboard() {
                   <HeaderForm children={"Nova Turma"} />
                   <div className="flex mt-2 gap-2 justify-center items-center">
                     <form
-                      onSubmit={handleSubmitClass(cadastroTurmas)}
+                      onSubmit={handleSubmitClass(registrationClasses)}
                       className="flex flex-col items-center"
                     >
                       <label htmlFor="turma" className="opacity-45 font-medium">
@@ -643,7 +645,7 @@ export function Dashboard() {
                       >
                         <button
                           onClick={() => {
-                            deletarImagem(image);
+                            deleteImage(image);
                           }}
                           className="fixed top-0 right-0 mr-4 mt-2 cursor-pointer"
                         >
@@ -668,7 +670,7 @@ export function Dashboard() {
                     type="file"
                     accept="image/*"
                     className="opacity-0 w-72  -ml-40 h-full cursor-pointer"
-                    onChange={mudancaArquivo}
+                    onChange={changeFile}
                   />
                 </button>
               </article>
@@ -691,7 +693,7 @@ export function Dashboard() {
                   </h2>
                   <div className="flex justify-center items-center p-2 ">
                     <form
-                      onSubmit={handleSubmit(cadastroProfessor)}
+                      onSubmit={handleSubmit(registrationTeacher)}
                       className="mt-1 items-center justify-center flex flex-col"
                     >
                       <div className="flex flex-col gap-1 w-80 xl:w-60">

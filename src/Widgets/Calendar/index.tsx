@@ -29,31 +29,31 @@ interface Event {
 export function CalendarDisplay() {
   const { user, uidContextInstitution, uidContextGeral } = useAuth(); // Obtém o contexto de autenticação
   const [date] = useState<Date>(new Date()); // Estado que armazena a data atual
-  const [eventos, setEventos] = useState<Event[]>([]); // Estado que armazena a lista de eventos
+  const [events, setEvents] = useState<Event[]>([]); // Estado que armazena a lista de eventos
   const [, setLoading] = useState(true); // Estado que controla a visibilidade do loading spinner
   const [calendarVisible, setCalendarVisible] = useState(false); // Estado que controla a visibilidade do calendário
   const [eventsVisible, setEventsVisible] = useState(false); // Estado que controla a visibilidade da lista de eventos
-  const [, setEventoUpdated] = useState(false);
+  const [, setEventsUpdate] = useState(false);
 
   const [isAdmin, setIsAdmin] = useState<boolean>(false);
 
-  const buscarDadosTipoUser = useCallback(async (uid: string) => {
+  const fetchDataTypeUser = useCallback(async (uid: string) => {
     if (typeof uid !== "string") {
       throw new Error("O ID fornecido não é uma string válida");
     }
 
-    const buscarTipoInstituicao = async () => {
-      const dadosRefInstituicao = doc(db, "institutions", uid);
-      const dadosInstituicao = await getDoc(dadosRefInstituicao);
-      if (dadosInstituicao.exists()) {
-        setIsAdmin(dadosInstituicao.data()?.userTypeAdmin);
+    const searchTypeInstitution = async () => {
+      const dataRefInstituicao = doc(db, "institutions", uid);
+      const dataInstitution = await getDoc(dataRefInstituicao);
+      if (dataInstitution.exists()) {
+        setIsAdmin(dataInstitution.data()?.userTypeAdmin);
         return true;
       }
       return false;
     };
     try {
-      const tipoEncontrado = await buscarTipoInstituicao();
-      if (!tipoEncontrado) {
+      const typeFound = await searchTypeInstitution();
+      if (!typeFound) {
         throw new Error("Usuário não encontrado em nenhuma das coleções.");
       }
     } catch (error) {
@@ -63,19 +63,11 @@ export function CalendarDisplay() {
 
   useEffect(() => {
     if (user) {
-      buscarDadosTipoUser(user.uid);
+      fetchDataTypeUser(user.uid);
     }
-  }, [user, buscarDadosTipoUser]);
+  }, [user, fetchDataTypeUser]);
 
-  const abrirCaixaTexto = async (selectedDate: Date) => {
-    // if (!isAdmin) {
-    //   Swal.fire(
-    //     "Acesso negado",
-    //     "Somente a escola pode adicionar eventos.",
-    //     "error"
-    //   );
-    //   return;
-    // }
+  const openBoxInput = async (selectedDate: Date) => {
     const { value: texto } = await Swal.fire({
       title: "Seu Novo Evento",
       input: "text",
@@ -88,11 +80,11 @@ export function CalendarDisplay() {
     });
 
     if (texto) {
-      salvarEventos({ date: selectedDate, title: texto }); // Salva o evento no Firestore
+      saveEvents({ date: selectedDate, title: texto }); // Salva o evento no Firestore
     }
   };
 
-  const salvarEventos = async (evento: Event) => {
+  const saveEvents = async (evento: Event) => {
     try {
       if (!user?.uid) {
         throw new Error("User não encontrado.");
@@ -100,48 +92,48 @@ export function CalendarDisplay() {
 
       const uidEvent: string = uuidV4();
 
-      const dadosRefEventos = collection(
+      const dataRefEvents = collection(
         db,
         "institutions",
         uidContextInstitution,
         "events"
       );
 
-      await addDoc(dadosRefEventos, {
+      await addDoc(dataRefEvents, {
         uid: uidEvent,
         date: Timestamp.fromDate(evento.date),
         title: evento.title,
       });
 
-      setEventoUpdated((prev) => !prev);
+      setEventsUpdate((prev) => !prev);
       toast.success("Evento Adicionado");
 
       // Re-fetch the updated events list after adding a new event
-      await buscarDadosEventos();
+      await searchDataEvents();
     } catch (error) {
       console.error("Erro ao adicionar evento:", error);
     }
   };
 
-  const buscarDadosEventos = useCallback(async () => {
+  const searchDataEvents = useCallback(async () => {
     try {
       setLoading(true);
 
-      const eventosRef = collection(
+      const dataRefEvents = collection(
         db,
         "institutions",
         uidContextGeral,
         "events"
       );
 
-      const snapshot = await getDocs(eventosRef);
-      const dadosEventos = snapshot.docs.map((event) => ({
+      const snapshot = await getDocs(dataRefEvents);
+      const dataEvents = snapshot.docs.map((event) => ({
         uid: event.id,
         title: event.data().title,
         date: event.data().date.toDate(),
       }));
 
-      setEventos(dadosEventos);
+      setEvents(dataEvents);
     } catch (err) {
       console.error("Erro ao buscar eventos:", err);
     } finally {
@@ -150,19 +142,11 @@ export function CalendarDisplay() {
   }, [uidContextGeral]);
 
   useEffect(() => {
-    buscarDadosEventos();
-  }, [buscarDadosEventos]);
+    searchDataEvents();
+  }, [searchDataEvents]);
 
-  const deleteEvento = useCallback(
+  const deleteEvent = useCallback(
     async (uid: string) => {
-      // if (!user?.userTypeAdmin) {
-      //   Swal.fire(
-      //     "Acesso negado",
-      //     "Somente a escola pode remover eventos.",
-      //     "error"
-      //   );
-      //   return;
-      // }
       try {
         const eventoRef = doc(
           db,
@@ -173,7 +157,7 @@ export function CalendarDisplay() {
         );
         await deleteDoc(eventoRef);
 
-        setEventos((prevEventos) =>
+        setEvents((prevEventos) =>
           prevEventos.filter((evento) => evento.uid !== uid)
         );
         toast.error("Evento Excluído");
@@ -185,14 +169,14 @@ export function CalendarDisplay() {
   );
 
   function onClickDay(selectedDate: Date) {
-    return isAdmin ? abrirCaixaTexto(selectedDate) : null; // Passa a data selecionada para a função
+    return isAdmin ? openBoxInput(selectedDate) : null; // Passa a data selecionada para a função
   }
 
   // Função que obtém todos os eventos do ano atual
   function getEventsForYear(
     date: Date
   ): { uid: string | any; title: string; date: Date }[] {
-    return eventos
+    return events
       .filter((event) => event.date.getFullYear() === date.getFullYear())
       .sort((a, b) => a.date.getTime() - b.date.getTime())
       .map((event) => ({
@@ -215,8 +199,8 @@ export function CalendarDisplay() {
   }
 
   useEffect(() => {
-    eventos;
-  }, [salvarEventos, deleteEvento]);
+    events;
+  }, [saveEvents, deleteEvent]);
 
   return (
     <div
@@ -249,7 +233,7 @@ export function CalendarDisplay() {
               { date } //* Define classes CSS para cada tile (dia)
             ) =>
               `${styles.tile} ${
-                eventos.some(
+                events.some(
                   //* A função some é um método de array que verifica se pelo menos um elemento do array atende à condição especificada. Nesse caso, estamos verificando se algum dos eventos na lista eventos ocorre no dia representado por date.
                   (event) =>
                     event.date.getFullYear() === date.getFullYear() && //* Verifica se o ano do evento é o mesmo ano do tile (data do dia).
@@ -318,7 +302,7 @@ export function CalendarDisplay() {
                       {isAdmin && (
                         <button
                           className="ml-2 mb-2 text-greenEdu font-bold border-whiteEdu border-2 px-1 rounded-3xl hover:text-blackEdu"
-                          onClick={() => deleteEvento(event.uid)}
+                          onClick={() => deleteEvent(event.uid)}
                         >
                           Remover
                         </button>

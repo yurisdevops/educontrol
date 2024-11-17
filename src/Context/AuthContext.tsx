@@ -92,7 +92,6 @@ export function AuthProvider({ children }: AuthProviderProps) {
     }
   };
 
-  // Função de logout
   const logout = async () => {
     try {
       await signOut(auth);
@@ -101,14 +100,13 @@ export function AuthProvider({ children }: AuthProviderProps) {
     }
   };
 
-  // Função getUIDS
   const getUIDS = useCallback(async (userUid: string) => {
-    const dadosInstituicao = async () => {
-      const institutionRef = doc(db, "institutions", userUid);
-      const dadosInstituicao = await getDoc(institutionRef);
-      if (dadosInstituicao.exists()) {
-        const uidInstituicao = dadosInstituicao.data();
-        const uidGeral = uidInstituicao.uid;
+    const searchInstitutionUid = async () => {
+      const dataInstitutionRef = doc(db, "institutions", userUid);
+      const dataInstitution = await getDoc(dataInstitutionRef);
+      if (dataInstitution.exists()) {
+        const dataInstitutionExist = dataInstitution.data();
+        const uidGeral = dataInstitutionExist.uid;
         setUidContextGeral(uidGeral);
 
         return true;
@@ -116,13 +114,13 @@ export function AuthProvider({ children }: AuthProviderProps) {
       return false;
     };
 
-    const dadosProfessor = async () => {
-      const professorRef = doc(db, "teachers", userUid);
+    const searchTeacherUid = async () => {
+      const dataTeacherRef = doc(db, "teachers", userUid);
 
-      const dadosProfessor = await getDoc(professorRef);
-      if (dadosProfessor.exists()) {
-        const uidInstituicaoProfessor = dadosProfessor.data();
-        const uidGeral = uidInstituicaoProfessor.uidInstitution;
+      const dataTeacher = await getDoc(dataTeacherRef);
+      if (dataTeacher.exists()) {
+        const dataTeacherExist = dataTeacher.data();
+        const uidGeral = dataTeacherExist.uidInstitution;
         setUidContextGeral(uidGeral);
         return true;
       }
@@ -130,9 +128,9 @@ export function AuthProvider({ children }: AuthProviderProps) {
     };
 
     try {
-      const uidGeralEncontrado =
-        (await dadosInstituicao()) || (await dadosProfessor());
-      if (!uidGeralEncontrado) {
+      const uidGeneralFound =
+        (await searchInstitutionUid()) || (await searchTeacherUid());
+      if (!uidGeneralFound) {
         throw new Error("Uid geral não encontrado.");
       }
     } catch (error) {
@@ -160,12 +158,10 @@ export function AuthProvider({ children }: AuthProviderProps) {
   );
 }
 
-// Função para obter item do localStorage
 function getLocalStorageItem(key: string): string | null {
   return localStorage.getItem(key);
 }
 
-// Função para salvar item no localStorage
 function saveLocalStorageItem(key: string, value: string | null) {
   if (value) {
     localStorage.setItem(key, value);
@@ -174,7 +170,6 @@ function saveLocalStorageItem(key: string, value: string | null) {
   }
 }
 
-// Hook para usar o AuthContext
 export const useAuth = (): AuthContextProps | any => {
   const context = useContext(AuthContext);
   if (!context) {

@@ -1,11 +1,9 @@
 // routes.tsx
 import { createBrowserRouter } from "react-router-dom";
 import { Home } from "../Pages/Home";
-import { RegisterTeacher } from "../Pages/Register/RegisterTeacher";
 import { LoginTeacher } from "../Pages/Login/LoginTeacher";
 import { Layout } from "../Components/Layout";
 import { ProfileTeacher } from "../Pages/Profile/ProfileTeacher";
-
 import { Dashboard } from "../Pages/Dashboard";
 import { Class } from "../Pages/Dashboard/Class";
 import { ProtectedRoute } from "../Protected/ProtectedRoute";
@@ -56,14 +54,6 @@ const route = createBrowserRouter([
         element: (
           <ProtectedRoute>
             <ProfileInformation />
-          </ProtectedRoute>
-        ),
-      },
-      {
-        path: "/dashboard/registerTeacher",
-        element: (
-          <ProtectedRoute>
-            <RegisterTeacher />
           </ProtectedRoute>
         ),
       },

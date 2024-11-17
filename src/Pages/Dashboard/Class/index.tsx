@@ -11,7 +11,7 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { StudentForm } from "../../../Components/StudentForm";
-import { addDoc, collection, doc, getDoc, getDocs } from "firebase/firestore";
+import { addDoc, collection, doc, getDocs } from "firebase/firestore";
 import { db } from "../../../services/firebaseConnection";
 
 import { v4 as uuidV4 } from "uuid";
@@ -31,11 +31,8 @@ export function Class() {
   const [newStudent, setNewStudent] = useState(false);
   const [classUid, setClassUid] = useState("");
   const [className, setClassName] = useState("");
-
-  const [estudantes, setEstudantes] = useState<any[]>([]);
-
-  const { user, uidContextInstitution } = useAuth();
-
+  const [students, setStudents] = useState<any[]>([]);
+  const { user, uidContextInstitution, uidContextGeral } = useAuth();
   const navigate = useNavigate();
   const { uid }: string | any = useParams();
 
@@ -56,31 +53,11 @@ export function Class() {
   const back = () => {
     navigate("/dashboard");
   };
-  const buscarTurmasUids = useCallback(async (userUid: string) => {
-    const professorRef = doc(db, "teachers", userUid);
-    const institutionRef = doc(db, "institutions", userUid);
 
-    const dadosProfessor = await getDoc(professorRef);
-    if (dadosProfessor.exists()) {
-      const uidInstituicaoProfessor = dadosProfessor.data();
-      const uidGeral = uidInstituicaoProfessor.uidInstitution;
-      buscarAlunos(uidGeral);
-      buscarTurmasPorInstituicao(uidGeral);
-    } else {
-      const dadosInstituicao = await getDoc(institutionRef);
-      if (dadosInstituicao.exists()) {
-        const uidInstituicao = dadosInstituicao.data();
-        const uidGeral = uidInstituicao.uid;
-        buscarAlunos(uidGeral);
-        buscarTurmasPorInstituicao(uidGeral);
-      }
-    }
-  }, []);
-
-  const buscarTurmasPorInstituicao = useCallback(
+  const searchClassesByInstitution = useCallback(
     async (institutionId: string) => {
       try {
-        const turmasRef = collection(
+        const classesRefData = collection(
           db,
           "institutions",
           institutionId,
@@ -88,9 +65,9 @@ export function Class() {
         );
 
         const classesInfo: any[] = [];
-        const snapshot = await getDocs(turmasRef);
+        const snapshotClasses = await getDocs(classesRefData);
 
-        snapshot.forEach((doc) => {
+        snapshotClasses.forEach((doc) => {
           const data = doc.data();
 
           const classInfo = {
@@ -116,9 +93,8 @@ export function Class() {
   );
 
   useEffect(() => {
-    buscarTurmasUids(user?.uid);
-    console.log(user);
-  }, [buscarTurmasUids, user?.uid]);
+    searchClassesByInstitution(uidContextGeral);
+  }, [searchClassesByInstitution, uidContextGeral]);
 
   const addStudentToClass = useCallback(
     async (data: StudentFormClass) => {
@@ -152,29 +128,27 @@ export function Class() {
     },
     [classUid, uidContextInstitution, reset]
   );
-  console.log(uid, uidContextInstitution);
 
-  const buscarAlunos = useCallback(
+  const searchStudents = useCallback(
     async (uidGeral: string) => {
       try {
-        const alunosRef = collection(
+        const dataStudentsRef = collection(
           db,
           "institutions",
           uidGeral,
           "classes",
-          uid, // Aqui está o UID da classe, não `uid`.
+          uid,
           "students"
         );
-        console.log(alunosRef);
 
-        const acessoDadosAlunos = await getDocs(alunosRef);
+        const accessDataStudents = await getDocs(dataStudentsRef);
 
-        if (!acessoDadosAlunos.empty) {
+        if (!accessDataStudents.empty) {
           const dadosAlunos: { id: string }[] = [];
-          acessoDadosAlunos.forEach((doc) => {
+          accessDataStudents.forEach((doc) => {
             dadosAlunos.push({ id: doc.id, ...doc.data() });
           });
-          setEstudantes(dadosAlunos);
+          setStudents(dadosAlunos);
         }
       } catch (error) {
         console.error("Erro ao buscar alunos:", error);
@@ -184,8 +158,8 @@ export function Class() {
   );
 
   useEffect(() => {
-    buscarAlunos(user?.uid);
-  }, [buscarAlunos, user?.uid, uid]);
+    searchStudents(user?.uid);
+  }, [searchStudents, user?.uid, uid]);
 
   return (
     <main className="h-full">
@@ -219,7 +193,7 @@ export function Class() {
                   </tr>
                 </thead>
                 <tbody className="border border-greenEdu  ">
-                  {estudantes.map((name, index) => (
+                  {students.map((name, index) => (
                     <tr
                       key={index}
                       className="border border-greenEdu text-center text-xs"
