@@ -121,7 +121,7 @@ export function Class() {
         await addDoc(studentsCollectionRef, dataSave);
 
         setTimeout(() => {
-          toast.success("Aluno Adicionado")
+          toast.success("Aluno Adicionado");
         }, 1000);
         console.log("Aluno adicionado com sucesso!");
 

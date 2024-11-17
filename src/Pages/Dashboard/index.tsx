@@ -262,7 +262,7 @@ export function Dashboard() {
       const classesRefData = collection(
         db,
         "institutions",
-        uidContextInstitution,
+        uidContextGeral,
         "classes"
       );
 
