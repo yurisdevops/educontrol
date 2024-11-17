@@ -250,7 +250,7 @@ export function Class() {
             </div>
 
             {newStudent && (
-              <div className="w-128 z-10 border-4 rounded-2xl bg-whiteEdu border-greenEdu h-80 -ml-128">
+              <div className="w-128 z-10 border-4 rounded-2xl bg-whiteEdu border-greenEdu h-72 -ml-128">
                 <div className="px-4 py-2 flex justify-end font-bold hover:text-greenEdu cursor-pointer">
                   <button onClick={() => setNewStudent(!newStudent)}>X</button>
                 </div>

@@ -17,7 +17,7 @@ export function StudentForm({ register }: StudentFormProps) {
           <div className="flex-1">
             <label
               htmlFor="name"
-              className="ml-1 font-bold text-xl text-greenEdu "
+              className="ml-1 font-bold text-sm text-greenEdu "
             >
               NOME:
             </label>
@@ -31,7 +31,7 @@ export function StudentForm({ register }: StudentFormProps) {
           <div className="flex-1">
             <label
               htmlFor="surname"
-              className="ml-1 font-bold text-xl text-greenEdu"
+              className="ml-1 font-bold text-sm text-greenEdu"
             >
               SOBRENOME:
             </label>
@@ -47,7 +47,7 @@ export function StudentForm({ register }: StudentFormProps) {
           <div className="flex-1">
             <label
               htmlFor="gender"
-              className="ml-1 font-bold text-xl text-greenEdu"
+              className="ml-1 font-bold text-sm text-greenEdu"
             >
               SEXO:
             </label>
@@ -66,7 +66,7 @@ export function StudentForm({ register }: StudentFormProps) {
           <div className="flex-1">
             <label
               htmlFor="birthdate"
-              className="ml-1 font-bold text-xl text-greenEdu"
+              className="ml-1 font-bold text-sm text-greenEdu"
             >
               DATA DE NASCIMENTO:
             </label>
