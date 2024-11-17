@@ -8,7 +8,6 @@ interface SelectProps {
   register: UseFormRegister<any>;
   error?: string;
   rules?: RegisterOptions;
-  value?: string;
   multiple?: boolean;
 }
 
@@ -32,7 +31,7 @@ export function Select({
       >
         {children}
       </select>
-      {error && <p className="text-redEdu">Escolha uma opção</p>}
+      {error && <p className="text-redEdu">{error}</p>}
     </div>
   );
 }

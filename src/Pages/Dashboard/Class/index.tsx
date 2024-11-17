@@ -120,8 +120,20 @@ export function Class() {
         await addDoc(studentsCollectionRef, dataSave);
         console.log("Aluno adicionado com sucesso!");
 
+        setStudents((prevStudents) => {
+          const updatedStudents = [
+            ...prevStudents,
+            { id: studentUid, ...dataSave },
+          ];
+
+          // Ordenar a lista de alunos por nome (e sobrenome, se necessário)
+          updatedStudents.sort((a, b) => a.name.localeCompare(b.name));
+
+          return updatedStudents;
+        });
+
         setNewStudent(false);
-        await searchStudents;
+
         reset();
       } catch (error) {
         console.error("Erro ao adicionar aluno à turma:", error);
