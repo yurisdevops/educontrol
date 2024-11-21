@@ -16,6 +16,7 @@ import { Button } from "../../../Components/Button";
 import { Select } from "../../../Components/Select";
 import { TitleBar } from "../../../Components/TitleBar";
 import { useAuth } from "../../../Context/AuthContext";
+import toast from "react-hot-toast";
 
 const profileSchema = z.object({
   name: z.string().min(1, "Nome é obrigatório"),
@@ -147,7 +148,7 @@ export function ProfileInformation() {
       const teacherDocRef = doc(db, "teachers", selectedTeacher.uid);
 
       await updateDoc(teacherDocRef, data);
-      alert("Perfil atualizado com sucesso!");
+      toast.success("Perfil Atualizado!");
       setIsEditing(false);
       setSelectedTeacher(null);
       reset();
