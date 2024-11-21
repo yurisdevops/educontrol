@@ -11,7 +11,7 @@ import {
   onSnapshot,
   setDoc,
 } from "firebase/firestore";
-import { getAuth, signOut } from "firebase/auth";
+import { getAuth } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../../Context/AuthContext";
 import { ContactForm } from "../../../Components/ContactForm";
@@ -80,7 +80,7 @@ export type FormDataProfileTeachers = z.infer<typeof profileSchema>;
 
 export function ProfileTeacher() {
   const navigate = useNavigate();
-  const { user, uidContextGeral, uidContextTeacher } = useAuth();
+  const { user, uidContextGeral, uidContextTeacher, logout } = useAuth();
   const [institutionName, setInstitutionName] = useState<string | null>(null);
   const [classes, setClasses] = useState<
     Array<{ nameClass: string; uid: string; maxStudent: number }>
@@ -120,7 +120,7 @@ export function ProfileTeacher() {
 
   const handleLogout = async () => {
     try {
-      await signOut(getAuth());
+      await logout;
       navigate("/", { replace: true });
     } catch (err) {
       console.error("Erro ao sair:", err);

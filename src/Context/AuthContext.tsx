@@ -28,6 +28,9 @@ interface AuthContextProps {
   login: (email: string, password: string) => Promise<void>;
   logout: () => Promise<void>;
   getUIDS: (userUid: string) => Promise<void>;
+  fetchDataTypeUser: (userUid: string) => Promise<void>;
+  isUser: string | boolean;
+  isAdmin: string | boolean;
   uidContextGeral: string | null;
 }
 
@@ -51,6 +54,8 @@ export function AuthProvider({ children }: AuthProviderProps) {
   const [uidContextTeacher, setUidContextTeacher] = useState<string | null>(
     getLocalStorageItem("uidContextTeacher")
   );
+  const [isUser, setIsUser] = useState<boolean>(false);
+  const [isAdmin, setIsAdmin] = useState<boolean>(false);
 
   const auth = getAuth();
 
@@ -138,6 +143,54 @@ export function AuthProvider({ children }: AuthProviderProps) {
     }
   }, []);
 
+  const fetchDataTypeUser = useCallback(async (uid: string) => {
+    if (!uid || typeof uid !== "string") {
+      throw new Error("O ID fornecido não é válido");
+    }
+
+    setIsAdmin(false);
+    setIsUser(false);
+
+    const userUID = auth.currentUser?.uid;
+
+    if (!userUID) {
+      console.error("Usuário não está autenticado");
+      return;
+    }
+
+    const searchTypeInstitution = async () => {
+      const dataRefInstituicao = doc(db, "institutions", uid);
+      const dataInstitution = await getDoc(dataRefInstituicao);
+
+      if (dataInstitution.exists() && dataInstitution.data()?.userTypeAdmin) {
+        setIsAdmin(true);
+        return true;
+      }
+      return false;
+    };
+
+    const searchTypeTeacher = async () => {
+      const dataRefProfessor = doc(db, "teachers", uid);
+      const dataTeacher = await getDoc(dataRefProfessor);
+
+      if (dataTeacher.exists() && dataTeacher.data()?.userTypeNormal) {
+        setIsUser(true);
+        return true;
+      }
+      return false;
+    };
+
+    try {
+      const typeFound =
+        (await searchTypeInstitution()) || (await searchTypeTeacher());
+      if (!typeFound) {
+        throw new Error("Usuário não encontrado em nenhuma das coleções.");
+      }
+    } catch (error) {
+      console.error("Erro ao obter status:", error);
+    }
+  }, []);
+
   return (
     <AuthContext.Provider
       value={{
@@ -151,6 +204,9 @@ export function AuthProvider({ children }: AuthProviderProps) {
         logout,
         getUIDS,
         uidContextGeral,
+        fetchDataTypeUser,
+        isUser,
+        isAdmin,
       }}
     >
       {children}

@@ -3,7 +3,7 @@ import { TitleBar } from "../../../Components/TitleBar";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { auth, db } from "../../../services/firebaseConnection";
+import { db } from "../../../services/firebaseConnection";
 import { doc, setDoc } from "firebase/firestore";
 import { getAuth } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
@@ -12,10 +12,36 @@ import { AdressForm } from "../../../Components/AdressForm";
 import { ContactForm } from "../../../Components/ContactForm";
 import { InstitutionForm } from "../../../Components/InstitututionForm";
 
+function validarCNPJ(cnpj: any | string[]) {
+  cnpj = cnpj.replace(/[^\d]+/g, "");
+
+  if (cnpj.length !== 14) return false;
+
+  // Cálculo dos dígitos verificadores
+  const pesos1 = [5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2];
+  const pesos2 = [6, 5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2];
+
+  const calcularDigito = (cnpj: string, pesos: string | any[]) => {
+    let soma = 0;
+    for (let i = 0; i < pesos.length; i++) {
+      soma += parseInt(cnpj[i]) * pesos[i];
+    }
+    const resto = soma % 11;
+    return resto < 2 ? 0 : 11 - resto;
+  };
+
+  const digito1 = calcularDigito(cnpj, pesos1);
+  const digito2 = calcularDigito(cnpj + digito1, pesos2);
+
+  return cnpj.endsWith(digito1.toString() + digito2.toString());
+}
+
 const profileinstitutionSchema = z.object({
   name: z.string().min(1, "O campo nome da instituição é obrigatório"),
   director: z.string().min(1, "O campo nome do Diretor é obrigatório"),
-  cnpj: z.string().min(1, "O campo  CNPJ é obrigatório"),
+  cpf: z.string().refine(validarCNPJ, {
+    message: "CNPJ inválido",
+  }),
   inscricao: z.string().min(1, "O campo  Inscrição Estadual é obrigatória"),
   email: z.string().email("O campo e-mail inválido"),
   registration: z.string().min(1, "O campo código INEP é obrigatório"),
@@ -43,7 +69,7 @@ type FormDataProfileInstitutions = z.infer<typeof profileinstitutionSchema>;
 
 export function ProfileInstituion() {
   const navigate = useNavigate();
-  const { setUidContextInstitution } = useAuth();
+  const { setUidContextInstitution, logout } = useAuth();
 
   const {
     register,
@@ -74,10 +100,10 @@ export function ProfileInstituion() {
 
   const handleLogout = async () => {
     try {
-      await auth.signOut();
+      await logout;
       navigate("/", { replace: true });
     } catch (err) {
-      console.log(err);
+      console.error("Erro ao sair:", err);
     }
   };
 

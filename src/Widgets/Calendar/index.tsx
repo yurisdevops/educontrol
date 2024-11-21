@@ -62,7 +62,7 @@ export function CalendarDisplay() {
   }, []);
 
   useEffect(() => {
-    if (user) {
+    if (user?.uid === uidContextInstitution) {
       fetchDataTypeUser(user.uid);
     }
   }, [user, fetchDataTypeUser]);

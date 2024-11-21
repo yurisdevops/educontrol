@@ -92,17 +92,19 @@ export function Dashboard() {
 
   const {
     user,
+    logout,
     getUIDS,
     uidContextGeral,
     uidContextTeacher,
     uidContextInstitution,
     setUidContextTeacher,
+    fetchDataTypeUser,
+    isAdmin,
+    isUser,
   } = useAuth();
   const auth = getAuth();
   const navigate = useNavigate();
   const [userUid, setUserUid] = useState<string | any>("");
-  const [isUser, setIsUser] = useState<boolean>(false);
-  const [isAdmin, setIsAdmin] = useState<boolean>(false);
   const [loading, setLoading] = useState(false);
   const [isImagens, setIsImagens] = useState<ImagensEventosProps[]>([]);
   const [maxAlunos, setMaxAlunos] = useState<number>();
@@ -113,43 +115,6 @@ export function Dashboard() {
   const [classesTeachers, setClassesTeachers] = useState<
     Array<{ nameClass: string; uid: string; maxStudent: number }>
   >([]);
-
-  const fetchDataTypeUser = useCallback(async (uid: string) => {
-    if (typeof uid !== "string") {
-      throw new Error("O ID fornecido não é uma string válida");
-    }
-
-    const searchTypeInstitution = async () => {
-      const dataRefInstituicao = doc(db, "institutions", uid);
-      const dataInstitution = await getDoc(dataRefInstituicao);
-      if (dataInstitution.exists()) {
-        setIsAdmin(dataInstitution.data()?.userTypeAdmin);
-        return true;
-      }
-      return false;
-    };
-
-    const searchTypeTeacher = async () => {
-      const dataRefProfessor = doc(db, "teachers", uid);
-      const dataTeacher = await getDoc(dataRefProfessor);
-
-      if (dataTeacher.exists()) {
-        setIsUser(dataTeacher.data()?.userTypeNormal);
-        return true;
-      }
-      return false;
-    };
-
-    try {
-      const typeFound =
-        (await searchTypeInstitution()) || (await searchTypeTeacher());
-      if (!typeFound) {
-        throw new Error("Usuário não encontrado em nenhuma das coleções.");
-      }
-    } catch (error) {
-      console.error("Erro ao obter status:", error);
-    }
-  }, []);
 
   useEffect(() => {
     if (user) {
@@ -199,10 +164,16 @@ export function Dashboard() {
   };
 
   const totalMaxStudents = useMemo(() => {
-    return classes.reduce((accum, turma) => {
-      return accum + (Number(turma.maxStudent) || 0);
-    }, 0);
-  }, [classes]);
+    if (user?.uid === uidContextInstitution) {
+      return classes.reduce((accum, turma) => {
+        return accum + (Number(turma.maxStudent) || 0);
+      }, 0);
+    } else {
+      return classesTeachers.reduce((accum, turma) => {
+        return accum + (Number(turma.maxStudent) || 0);
+      }, 0);
+    }
+  }, [classes, classesTeachers]);
 
   useEffect(() => {
     setMaxAlunos(totalMaxStudents);
@@ -214,8 +185,8 @@ export function Dashboard() {
     }
   }, [searchClassesByInstitution, uidContextGeral]);
 
-  const searchClassesByTeachers = async (institutionId: string) => {
-    const classesRefData = doc(db, "teachers", institutionId);
+  const searchClassesByTeachers = async (teacherUid: string) => {
+    const classesRefData = doc(db, "teachers", teacherUid);
 
     try {
       const snapshotClassesData = await getDoc(classesRefData);
@@ -295,13 +266,14 @@ export function Dashboard() {
     [userUid]
   );
 
-  const logout = useCallback(async () => {
+  const handleLogout = async () => {
     try {
-      await auth.signOut();
-    } catch (error) {
-      console.error("Erro ao fazer logout:", error);
+      await logout;
+      navigate("/", { replace: true });
+    } catch (err) {
+      console.error("Erro ao sair:", err);
     }
-  }, [auth]);
+  };
 
   const saveUidTeacher = async (uid: string) => {
     try {
@@ -446,7 +418,7 @@ export function Dashboard() {
 
   return (
     <main className="max-h-full">
-      {isUser === true && (
+      {isUser && (
         <>
           <section>
             <TitleBar
@@ -454,7 +426,7 @@ export function Dashboard() {
               message="Seja Bem-vindo, Professor(a)"
               user={user.displayName}
               onClose={() => {
-                logout();
+                handleLogout();
               }}
               nameButton="Sair"
               icon={""}
@@ -531,7 +503,7 @@ export function Dashboard() {
         </>
       )}
 
-      {isAdmin === true && (
+      {isAdmin && (
         <>
           <section>
             <TitleBar
@@ -539,7 +511,7 @@ export function Dashboard() {
               message="Seja Bem-vindo, "
               user={user.displayName}
               onClose={() => {
-                logout();
+                handleLogout();
               }}
               onProfile={() => {
                 navigate("/dashboard/profile");
