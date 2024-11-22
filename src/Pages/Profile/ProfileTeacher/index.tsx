@@ -61,7 +61,18 @@ const profileSchema = z.object({
   gender: z.string().min(1, "Sexo é obrigatório"),
   birthdate: z.string().min(1, "Data de nascimento é obrigatória"),
   email: z.string().email("E-mail inválido"),
-  phone: z.string().min(1, "O campo telefone é obrigatório"),
+  phone: z
+    .string()
+    .min(1, "O campo telefone é obrigatório")
+    .refine(
+      (value) => {
+        const cleaned = value.replace(/\D/g, ""); // Remove tudo que não for número
+        return /^\d{11,12}$/.test(cleaned);
+      },
+      {
+        message: "Número de telefone inválido.",
+      }
+    ),
   cpf: z.string().refine(validarCPF, {
     message: "CPF inválido",
   }),
