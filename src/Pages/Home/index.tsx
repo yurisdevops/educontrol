@@ -5,7 +5,7 @@ export function Home() {
   return (
     <main className="w-full h-screen bg-whiteEdu flex items-center pl-48  ">
       <img
-        className="2xl:max-w-3xl xl:max-w-lg w-100 rotate-12 pl-10 drop-shadow-2xl"
+        className="2xl:max-w-3xl xl:max-w-lg w-100 rotate-12 pl-4 ml-10 -mr-10 drop-shadow-2xl"
         src={HomeIMG}
         alt="Home"
       />
