@@ -87,8 +87,8 @@ export function LoginInstitution() {
   };
 
   return (
-    <main className="h-screen w-full flex flex-col xl:flex-row">
-      <div className="xl:w-2/3 bg-greenEdu flex flex-col items-center justify-center text-whiteEdu gap-4">
+    <main className="xl:h-screen w-full flex flex-col-reverse xl:flex-row">
+      <div className="xl:w-2/3 h-screen bg-greenEdu flex flex-col items-center justify-center text-whiteEdu gap-4">
         <h1 className="font-bold font-sans text-3xl xl:text-5xl">
           Ainda não tem acesso?
         </h1>
@@ -104,8 +104,8 @@ export function LoginInstitution() {
           Cadastre-se
         </Link>
       </div>
-      <div className="w-full bg-whiteEdu flex flex-col justify-center items-center gap-6 -mt-9">
-        <h1 className="text-greenEdu font-bold text-4xl xl:text-5xl drop-shadow-xl">
+      <div className="xl:w-full h-screen xl:bg-whiteEdu flex flex-col justify-center items-center gap-6">
+        <h1 className="text-greenEdu font-bold ml-16 text-4xl xl:text-5xl drop-shadow-xl">
           Acesse sua conta Instituição
         </h1>
 

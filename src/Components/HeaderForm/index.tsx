@@ -7,7 +7,7 @@ interface HeaderFormProps {
 export function HeaderForm({ children }: HeaderFormProps) {
   return (
     <header className="flex justify-center items-center h-9 bg-greenEdu sticky top-0">
-      <h2 className="text-whiteEdu text-xl font-medium">{children}</h2>
+      <h2 className="text-whiteEdu xl:text-xl font-medium">{children}</h2>
     </header>
   );
 }

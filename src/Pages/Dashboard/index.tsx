@@ -553,12 +553,12 @@ export function Dashboard() {
                   )}
                 </section>
 
-                <section className="xl:m-5 xl:-mt-4 xl:w-52  w-32 xl:h-56 border-2 rounded-b-xl border-greenEdu">
+                <section className="xl:m-5 xl:-mt-4 xl:w-52 w-36  xl:h-56 border-2 rounded-b-xl border-greenEdu">
                   <HeaderForm children={"Nova Turma"} />
                   <div className="flex mt-2 gap-2 justify-center items-center">
                     <form
                       onSubmit={handleSubmitClass(registrationClasses)}
-                      className="flex flex-col items-center"
+                      className="flex flex-col items-center p-2"
                     >
                       <label htmlFor="turma" className="opacity-45 font-medium">
                         Turma

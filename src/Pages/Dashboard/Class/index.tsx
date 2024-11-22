@@ -209,9 +209,9 @@ export function Class() {
       {isAdmin && (
         <Container>
           <section className="mt-5 flex flex-col-reverse xl:flex-row xl:gap-40">
-            <aside className="border-greenEdu border-2 h-128 w-300 rounded-b-2xl -mr-16 mt-10 xl:mt-0">
+            <aside className="border-greenEdu border-2 h-128 w-92 xl:w-300 rounded-b-2xl xl:-mr-16 mt-10 xl:mt-0">
               <HeaderForm>Alunos</HeaderForm>
-              <div className="w-full h-72 flex justify-center">
+              <div className="xl:w-full h-72 w-92 flex justify-center">
                 <table className="mt-4 ">
                   <thead>
                     <tr className="bg-greenEdu text-whiteEdu">
@@ -248,10 +248,10 @@ export function Class() {
               </div>
             </aside>
 
-            <aside className="w-96 flex flex-col items-center ">
+            <aside className="xl:w-96 flex flex-col items-center gap-10 ">
               <CalendarDisplay />
 
-              <div className="border-2 border-greenEdu rounded-b-xl w-full absolute xl:w-85 xl:h-32 mt-32 xl:mt-44">
+              <div className="border-2 border-greenEdu rounded-b-xl w-80 absolute xl:w-85 xl:h-32 mt-32 xl:mt-44">
                 <HeaderForm>Chamada</HeaderForm>
                 <div className="flex justify-center items-center p-2 mt-4">
                   <button className="border-2 border-greenEdu p-2 px-24 rounded-md text-greenEdu font-bold text-lg">
@@ -260,7 +260,7 @@ export function Class() {
                 </div>
               </div>
 
-              <div className="border-2 border-greenEdu rounded-b-xl w-full absolute xl:w-85 xl:h-32 mt-32 xl:mt-96">
+              <div className="border-2 border-greenEdu rounded-b-xl w-80 xl:absolute xl:w-85 xl:h-32 mt-32 xl:mt-96">
                 <HeaderForm>Novo Aluno</HeaderForm>
                 <div className="flex justify-center items-center p-2 mt-4">
                   <button

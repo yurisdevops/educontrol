@@ -22,7 +22,7 @@ export function TitleBar({
   return (
     <div>
       <header className="flex -mt-14 ml-3 xl:ml-8 gap-4 items-center">
-        <h1 className="font-bold  text-sm xl:text-4xl text-whiteEdu">
+        <h1 className="font-bold text-sm xl:text-4xl text-whiteEdu">
           {title}
         </h1>
         <div className="flex font-bold flex-row justify-between w-full items-center">
