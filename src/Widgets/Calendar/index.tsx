@@ -286,12 +286,12 @@ export function CalendarDisplay() {
                   className={`${styles.heading} sticky top-0 bg-whiteEdu shadow-md text-greenEdu p-4`}
                 >
                   Eventos de {date.toLocaleString("pt-BR", { year: "numeric" })}
-                  :
+                  
                 </h2>
                 <div className="w-94 border border-greenEdu absolute"></div>
                 <ul className={styles.eventList}>
                   {eventsForYear.map((event) => (
-                    <li key={event.uid} className={styles.eventItem}>
+                    <li key={event.uid} className={`${styles.eventItem} text-left ml-10 mb-2`} >
                       <span className={styles.eventDate}>
                         {event.date.toLocaleDateString("pt-BR")}
                       </span>

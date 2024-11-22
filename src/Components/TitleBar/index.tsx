@@ -27,7 +27,7 @@ export function TitleBar({
         </h1>
         <div className="flex font-bold flex-row justify-between w-full items-center">
           <div className="flex flex-col items-center mt xl:flex xl:flex-row ">
-            <p className="mt-2 opacity-45 text-xp xl:text-base">{message}</p>
+            <p className="mt-2 opacity-90 text-xp xl:text-base text-blackEdu">{message}</p>
             <p className="mt-1 ml-2 text-xp text-whiteEdu xl:text-2xl">
               {user}
             </p>

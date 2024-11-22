@@ -4,8 +4,8 @@ export default {
   content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
   theme: {
     colors: {
-      greenEdu: "#5DEFD5",
-      whiteEdu: "#FAFAFA",
+      greenEdu: "#097d5e",
+      whiteEdu: "#f0f2f6",
       blackEdu: "#000000",
       redEdu: "#FF0000",
       blueEdu: "#0000FF",

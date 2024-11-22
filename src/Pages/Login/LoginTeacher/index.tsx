@@ -21,8 +21,6 @@ type FormDataLoginTeachers = z.infer<typeof loginSchema>;
 
 export function LoginTeacher() {
   const navigate = useNavigate();
-
-  const [errorMessage, setErrorMessage] = useState<string | null>(null); // State for error messages
   const [loading, setLoading] = useState(false); // State for loading feedback
   const { setUidContextTeacher } = useAuth();
 
@@ -74,7 +72,7 @@ export function LoginTeacher() {
       setUidContextTeacher(user.uid);
       await handleNavigation(user.uid);
     } catch (error) {
-      setErrorMessage(
+      toast.error(
         "Erro ao fazer login. Verifique suas credenciais e tente novamente."
       );
       console.error("Login error:", error);
@@ -96,7 +94,7 @@ export function LoginTeacher() {
         </span>
         <Link
           to="/"
-          className="border-2 p-1 px-6 w-48 rounded-3xl text-xl text-center font-bold mt-5 hover:bg-whiteEdu hover:text-greenEdu"
+          className="border-2 bg-whiteEdu text-greenEdu p-1 px-6 w-48 rounded-md text-xl text-center font-bold mt-5 hover:opacity-90"
         >
           Home
         </Link>
@@ -105,8 +103,7 @@ export function LoginTeacher() {
         <h1 className="text-greenEdu font-bold text-4xl xl:text-5xl drop-shadow-xl">
           Acesse sua conta Professor(a)
         </h1>
-        {errorMessage && <span className="text-red-500">{errorMessage}</span>}{" "}
-        {/* Error message display */}
+
         <form
           onSubmit={handleSubmit(onSubmit)}
           className="flex flex-col gap-6 items-center"

@@ -10,7 +10,7 @@ export function Button({ children, disabled }: ButtonChildren) {
     <button
       disabled={disabled}
       type="submit"
-      className="-mb-2 p-1 px-6 w-48 font-bold border-2 border-greenEdu rounded-3xl text-xl text-greenEdu hover:bg-greenEdu hover:text-whiteEdu"
+      className="-mb-2 p-1 px-6 w-48 font-bold border-2 bg-greenEdu rounded-md text-xl text-whiteEdu hover:opacity-90"
     >
       {children}
     </button>

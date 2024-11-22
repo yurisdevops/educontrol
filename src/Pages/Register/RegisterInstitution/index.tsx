@@ -67,7 +67,7 @@ export function RegisterInstitution() {
         </span>
         <Link
           to="/loginInstitution"
-          className="border-2 p-1 px-6 w-48 rounded-3xl text-xl text-center font-bold mt-5 hover:bg-whiteEdu hover:text-greenEdu"
+          className="border-2 bg-whiteEdu text-greenEdu p-1 px-6 w-48 rounded-md text-xl text-center font-bold mt-5 hover:opacity-90"
         >
           Entre
         </Link>

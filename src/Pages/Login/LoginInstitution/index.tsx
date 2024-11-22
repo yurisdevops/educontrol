@@ -21,7 +21,6 @@ type FormDataLoginInstitution = z.infer<typeof loginSchema>;
 export function LoginInstitution() {
   const navigate = useNavigate();
   const { setUidContextInstitution } = useAuth();
-  const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const [userUidInstitution, setUserUidInstitution] = useState<string | any>(
     ""
@@ -78,7 +77,7 @@ export function LoginInstitution() {
       setUserUidInstitution(user.uid);
       await handleNavigation(user.uid);
     } catch (error) {
-      setErrorMessage(
+      toast.error(
         "Erro ao fazer login. Verifique suas credenciais e tente novamente."
       );
       console.error("Login error:", error);
@@ -93,24 +92,23 @@ export function LoginInstitution() {
         <h1 className="font-bold font-sans text-3xl xl:text-5xl">
           Ainda não tem acesso?
         </h1>
-        <span className="max-w-80 xl:max-w-lg xl:text-2xl ml-7 opacity-80">
+        <span className="max-w-80 xl:max-w-lg xl:text-2xl ml-7">
           "É ótimo ter você conosco aqui no Educontrol! Faça seu cadastro e
           aproveite todas as ferramentas e recursos disponíveis para enriquecer
           sua experiência de aprendizado."
         </span>
         <Link
           to="/registerInstitution"
-          className="border-2 p-1 px-6 w-48 rounded-3xl text-xl text-center font-bold mt-5 hover:bg-whiteEdu hover:text-greenEdu"
+          className="border-2 bg-whiteEdu text-greenEdu p-1 px-6 w-48 rounded-md text-xl text-center font-bold mt-5 hover:opacity-90"
         >
           Cadastre-se
         </Link>
       </div>
-      <div className="w-full bg-whiteEdu flex flex-col justify-center items-center gap-6">
+      <div className="w-full bg-whiteEdu flex flex-col justify-center items-center gap-6 -mt-9">
         <h1 className="text-greenEdu font-bold text-4xl xl:text-5xl drop-shadow-xl">
           Acesse sua conta Instituição
         </h1>
-        {errorMessage && <span className="text-red-500">{errorMessage}</span>}{" "}
-        {/* Exibir mensagem de erro */}
+
         <form
           onSubmit={handleSubmit(onSubmit)}
           className="flex flex-col gap-6 items-center"

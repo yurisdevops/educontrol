@@ -179,7 +179,7 @@ export function ProfileInformation() {
         icon={""}
       />
 
-      <section className="max-h-full w-full flex flex-col items-center justify-center">
+      <section className="max-h-full w-full flex flex-col items-center justify-center mt-10">
         <div className="-mb-10 mt-7 -ml-96 border px-4 border-greenEdu rounded-full font-medium text-greenEdu">
           <label className="mr-3 hover:bg-whiteEdu" htmlFor="teacherSelect">
             Professores:
@@ -197,16 +197,10 @@ export function ProfileInformation() {
             }}
             disabled={loading}
           >
-            <option className="bg-greenEdu" value="">
-              Selecione um professor
-            </option>
+            <option value="">Selecione um professor</option>
             {!loading ? (
               teachersData.map((teacher: any) => (
-                <option
-                  className="bg-greenEdu"
-                  key={teacher.uid}
-                  value={teacher.uid}
-                >
+                <option key={teacher.uid} value={teacher.uid}>
                   {teacher.name} {teacher.surname}
                 </option>
               ))
@@ -216,14 +210,14 @@ export function ProfileInformation() {
           </select>
         </div>
         <button
-          className="-mb-10 mt-5 ml-120 border px-4 border-greenEdu rounded-full font-medium text-greenEdu hover:bg-greenEdu hover:text-whiteEdu "
+          className="-mb-10 mt-5 ml-100 border px-4 border-greenEdu rounded-md font-medium text-whiteEdu bg-greenEdu hover:opacity-90 "
           onClick={() => setIsEditing(!isEditing)}
         >
           {isEditing ? "Cancelar" : "Editar"}
         </button>
         <form
           onSubmit={handleSubmit(onSubmit)}
-          className="flex flex-col mt-10 items-center gap-4 px-4 py-5"
+          className="flex flex-col mt-28 items-center gap-4 px-4 py-5"
         >
           <div className="w-full flex flex-col -mt-2 xl:flex-row xl:gap-4">
             <div className="flex-1">

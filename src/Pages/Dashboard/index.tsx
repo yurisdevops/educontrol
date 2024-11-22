@@ -585,9 +585,9 @@ export function Dashboard() {
                           register={registerClass}
                         />
                       </div>
-                      <div className="border-2 border-greenEdu xl:w-48 w-32"></div>
+
                       <button
-                        className="px-8 py-2 font-bold opacity-55"
+                        className="xl:w-52 xl:mt-2 p-1 h-12 rounded-b-xl text-whiteEdu bg-greenEdu font-bold hover:opacity-90"
                         type="submit"
                       >
                         Adicionar
@@ -597,10 +597,6 @@ export function Dashboard() {
                 </section>
               </aside>
 
-              {/* <News
-                images={"imagens de noticias e eventos"}
-                swipper={"opcoes de troca swipper"}
-              /> */}
               <article className="border-2 rounded-2xl border-greenEdu h-96 xl:h-128 xl:w-1/2 xl:m-5 flex flex-col gap-3 justify-center items-center">
                 <div className="rounded-2xl mt-10 bg-greenEdu w-72 xl:w-130 h-5/6 border-2 border-greenEdu flex flex-col justify-center items-center">
                   <Swiper
@@ -633,11 +629,7 @@ export function Dashboard() {
                   </Swiper>
                 </div>
                 <button className="border-2 border-greenEdu rounded-lg w-16 mb-4 flex justify-center items-center cursor-pointer border-gray-600 h-16 md:w-48 relative">
-                  <FiUpload
-                    size={30}
-                    color="rgb(93 239 213)"
-                    className="absolute"
-                  />
+                  <FiUpload size={30} color="#097d5e" className="absolute" />
                   <input
                     type="file"
                     accept="image/*"
@@ -702,9 +694,11 @@ export function Dashboard() {
                           aria-invalid={!!errors.confirmPassword}
                         />
                       </div>
-                      <Button disabled={loading}>
-                        {loading ? "Cadastrando..." : "Cadastrar-se"}
-                      </Button>
+                      <div className="mt-2">
+                        <Button disabled={loading}>
+                          {loading ? "Cadastrando..." : "Cadastrar-se"}
+                        </Button>
+                      </div>
                     </form>
                   </div>
                 </div>

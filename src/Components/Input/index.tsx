@@ -23,9 +23,9 @@ export function Input({
   disable,
 }: InputProps) {
   return (
-    <div className="bg-greenEdu rounded-xl border-2 border-greenEdu mb-2 ">
+    <div>
       <input
-        className="opacity-90 text-base font-bold mb-1 w-full xl:w-full p-1 rounded-xl drop-shadow-xl outline-none"
+        className="opacity-90 text-base border-b-2 border-greenEdu font-bold mb-1 w-full xl:w-full p-1 rounded-sm drop-shadow-2xl outline-none"
         type={type}
         placeholder={placeholder}
         {...register(name, rules)}

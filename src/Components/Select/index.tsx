@@ -21,11 +21,11 @@ export function Select({
   multiple,
 }: SelectProps) {
   return (
-    <div className="bg-greenEdu rounded-xl border-2 border-greenEdu mb-2">
+    <div>
       <select
         {...register(name, rules)}
         id={name}
-        className="opacity-90 w-full mb-1 xl:w-full p-1 font-bold rounded-xl drop-shadow-xl outline-none"
+        className="opacity-90 w-full border-b-2 border-greenEdu mb-1 xl:w-full p-1 font-bold rounded-md drop-shadow-xl outline-none"
         disabled={disabled}
         multiple={multiple}
       >
