@@ -46,11 +46,14 @@ const profileinstitutionSchema = z.object({
   email: z.string().email("O campo e-mail inválido"),
   registration: z.string().min(1, "O campo código INEP é obrigatório"),
   phone: z
-    .string()
-    .min(1, "O campo telefone é obrigatório")
-    .refine((value) => /^(\d{11,12})$/.test(value), {
-      message: "Numero de telefone invalido.",
-    }),
+  .string()
+  .min(1, "O campo telefone é obrigatório")
+  .refine((value) => {
+    const cleaned = value.replace(/\D/g, ""); // Remove tudo que não for número
+    return /^\d{11,12}$/.test(cleaned);
+  }, {
+    message: "Número de telefone inválido.",
+  }),
   typeTeaching: z.string().min(1, ""),
   openingHours: z
     .string()
