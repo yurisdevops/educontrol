@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 
 export function Home() {
   return (
-    <main className="w-full h-screen xl:bg-greenEdu flex flex-col xl:flex-row items-center xl:pl-48 py-20 ">
+    <main className="w-full h-screen bg-greenEdu flex flex-col xl:flex-row items-center xl:pl-48 py-20 ">
       <img
         className=" xl:w-100 w-44  rotate-12 xl:pl-4 xl:ml-10 xl:-mr-10 drop-shadow-2xl "
         src={HomeIMG}
