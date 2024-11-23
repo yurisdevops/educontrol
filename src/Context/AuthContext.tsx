@@ -15,7 +15,7 @@ import {
   signOut,
   User,
 } from "firebase/auth";
-import { doc, getDoc } from "firebase/firestore"; // garantir que você importe esses métodos do Firebase Firestore
+import { collection, doc, getDoc, onSnapshot } from "firebase/firestore"; // garantir que você importe esses métodos do Firebase Firestore
 import { db } from "../services/firebaseConnection"; // ajuste esta importação para o seu arquivo de configuração
 
 interface AuthContextProps {
@@ -29,9 +29,12 @@ interface AuthContextProps {
   logout: () => Promise<void>;
   getUIDS: (userUid: string) => Promise<void>;
   fetchDataTypeUser: (userUid: string) => Promise<void>;
+  dataTeacherinInstitutions: (userUid: string) => void;
   isUser: string | boolean;
   isAdmin: string | boolean;
   uidContextGeral: string | null;
+  teacherName: string | null;
+  teacherEmail: string | null;
 }
 
 interface AuthProviderProps {
@@ -54,6 +57,12 @@ export function AuthProvider({ children }: AuthProviderProps) {
   const [uidContextTeacher, setUidContextTeacher] = useState<string | null>(
     getLocalStorageItem("uidContextTeacher")
   );
+  const [teacherName, setTeacherName] = useState<string | null>(
+    getLocalStorageItem("teacherName")
+  );
+  const [teacherEmail, setTeacherEmail] = useState<string | null>(
+    getLocalStorageItem("teacherEmail")
+  );
   const [isUser, setIsUser] = useState<boolean>(false);
   const [isAdmin, setIsAdmin] = useState<boolean>(false);
 
@@ -75,11 +84,15 @@ export function AuthProvider({ children }: AuthProviderProps) {
   useEffect(() => {
     saveLocalStorageItem("uidContextInstitution", uidContextInstitution);
     saveLocalStorageItem("uidContextGeral", uidContextGeral);
+    saveLocalStorageItem("teacherName", teacherName);
+    saveLocalStorageItem("teacherEmail", teacherEmail);
   }, [uidContextInstitution, uidContextGeral]);
 
   useEffect(() => {
     saveLocalStorageItem("uidContextTeacher", uidContextTeacher);
     saveLocalStorageItem("uidContextGeral", uidContextGeral);
+    saveLocalStorageItem("teacherName", teacherName);
+    saveLocalStorageItem("teacherEmail", teacherEmail);
   }, [uidContextTeacher, uidContextGeral]);
 
   // Função de login
@@ -191,6 +204,41 @@ export function AuthProvider({ children }: AuthProviderProps) {
     }
   }, []);
 
+  const dataTeacherinInstitutions = (userUid: string) => {
+    const classesRefData = collection(
+      db,
+      "institutions",
+      userUid,
+      "uidTeachers"
+    );
+
+    console.log(classesRefData);
+
+    return onSnapshot(classesRefData, (snapshot) => {
+      const dataTeacher = snapshot.docs.map((doc) => ({
+        name: doc.data().name,
+        uid: doc.data().uid,
+        email: doc.data().email,
+      }));
+      console.log(dataTeacher);
+
+      const teacherExists = dataTeacher.some(
+        (teacher) => teacher.uid === uidContextTeacher
+      );
+      console.log(teacherExists);
+
+      if (teacherExists) {
+        setTeacherName(
+          dataTeacher.find((teacher) => teacher.uid === uidContextTeacher)?.name
+        );
+        setTeacherEmail(
+          dataTeacher.find((teacher) => teacher.uid === uidContextTeacher)
+            ?.email
+        );
+      }
+    });
+  };
+
   return (
     <AuthContext.Provider
       value={{
@@ -207,6 +255,9 @@ export function AuthProvider({ children }: AuthProviderProps) {
         fetchDataTypeUser,
         isUser,
         isAdmin,
+        dataTeacherinInstitutions,
+        teacherName,
+        teacherEmail,
       }}
     >
       {children}

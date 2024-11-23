@@ -9,7 +9,6 @@ import { getAuth } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../../Context/AuthContext";
 import { AdressForm } from "../../../Components/AdressForm";
-import { ContactForm } from "../../../Components/ContactForm";
 import { InstitutionForm } from "../../../Components/InstitututionForm";
 
 function validarCNPJ(cnpj: any | string[]) {
@@ -39,25 +38,28 @@ function validarCNPJ(cnpj: any | string[]) {
 const profileinstitutionSchema = z.object({
   name: z.string().min(1, "O campo nome da instituição é obrigatório"),
   director: z.string().min(1, "O campo nome do Diretor é obrigatório"),
-  cpf: z.string().refine(validarCNPJ, {
+  cnpj: z.string().refine(validarCNPJ, {
     message: "CNPJ inválido",
   }),
   inscricao: z.string().min(1, "O campo  Inscrição Estadual é obrigatória"),
   email: z.string().email("O campo e-mail inválido"),
   registration: z.string().min(1, "O campo código INEP é obrigatório"),
   phone: z
-  .string()
-  .min(1, "O campo telefone é obrigatório")
-  .refine((value) => {
-    const cleaned = value.replace(/\D/g, ""); // Remove tudo que não for número
-    return /^\d{11,12}$/.test(cleaned);
-  }, {
-    message: "Número de telefone inválido.",
-  }),
-  typeTeaching: z.string().min(1, ""),
-  openingHours: z
     .string()
-    .min(1, "O campo horáirio de funcionamento é obrigatória"),
+    .min(1, "O campo telefone é obrigatório")
+    .refine(
+      (value) => {
+        const cleaned = value.replace(/\D/g, ""); // Remove tudo que não for número
+        return /^\d{11,12}$/.test(cleaned);
+      },
+      {
+        message: "Número de telefone inválido.",
+      }
+    ),
+  typeTeaching: z.string().min(1, ""),
+  state: z
+    .string()
+    .min(1, "O campo estado é obrigatório"),
   cep: z.string().min(1, "O campo cep é obrigatório"),
   street: z.string().min(1, "O campo rua é obrigatória"),
   number: z.string().min(1, "O campo número é obrigatório"),
@@ -138,10 +140,6 @@ export function ProfileInstituion() {
                 register={register}
                 errors={errors}
               />
-            </div>
-            <div className="w-full">
-              {" "}
-              <ContactForm register={register} errors={errors} user={user} />
             </div>
 
             <div className="w-full">

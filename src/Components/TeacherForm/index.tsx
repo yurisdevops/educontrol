@@ -1,6 +1,7 @@
 import { UseFormRegister } from "react-hook-form";
 import { Input } from "../Input";
 import { Select } from "../Select";
+import { useAuth } from "../../Context/AuthContext";
 
 interface TeacherFormProps {
   user: any;
@@ -13,10 +14,10 @@ interface TeacherFormProps {
 export function TeacherForm({
   register,
   errors,
-  user,
   value,
   classes,
 }: TeacherFormProps) {
+  const { teacherName, teacherEmail } = useAuth();
   return (
     <section>
       <div className="w-full flex flex-col -mt-2 xl:flex-row xl:gap-4">
@@ -28,7 +29,7 @@ export function TeacherForm({
             type="text"
             placeholder="ex: Luis Henrique"
             name="name"
-            value={user ? user.displayName : ""}
+            value={teacherName}
             error={errors.name?.message}
             register={register}
           />
@@ -121,7 +122,7 @@ export function TeacherForm({
             type="text"
             placeholder="ex:159.333.217-42"
             name="cpf"
-            error={errors.name?.message}
+            error={errors.cpf?.message}
             register={register}
           />
         </div>
@@ -134,6 +135,33 @@ export function TeacherForm({
             placeholder="ex: Rio de Janeiro"
             name="placeOfBirth"
             register={register}
+          />
+        </div>
+      </div>
+      <div className="w-full flex flex-col xl:flex-row xl:gap-4">
+        <div className="flex-1">
+          <label htmlFor="email" className="ml-1 text-base">
+            E-mail:
+          </label>
+          <Input
+            type="email"
+            placeholder=""
+            name="email"
+            value={teacherEmail}
+            register={register}
+            error={errors.email?.message}
+          />
+        </div>
+        <div className="flex-1">
+          <label htmlFor="phone" className="ml-1 text-base">
+            Telefone:
+          </label>
+          <Input
+            type="tel"
+            placeholder="ex: (21) 99035-2415"
+            name="phone"
+            register={register}
+            error={errors.phone?.message}
           />
         </div>
       </div>

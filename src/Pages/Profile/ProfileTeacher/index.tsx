@@ -11,10 +11,10 @@ import {
   onSnapshot,
   setDoc,
 } from "firebase/firestore";
-import { getAuth } from "firebase/auth";
+
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../../Context/AuthContext";
-import { ContactForm } from "../../../Components/ContactForm";
+
 import { AdressForm } from "../../../Components/AdressForm";
 import { TeacherForm } from "../../../Components/TeacherForm";
 import { useEffect, useState } from "react";
@@ -91,7 +91,13 @@ export type FormDataProfileTeachers = z.infer<typeof profileSchema>;
 
 export function ProfileTeacher() {
   const navigate = useNavigate();
-  const { user, uidContextGeral, uidContextTeacher, logout } = useAuth();
+  const {
+    user,
+    uidContextGeral,
+    uidContextTeacher,
+    logout,
+    dataTeacherinInstitutions,
+  } = useAuth();
   const [institutionName, setInstitutionName] = useState<string | null>(null);
   const [classes, setClasses] = useState<
     Array<{ nameClass: string; uid: string; maxStudent: number }>
@@ -108,12 +114,10 @@ export function ProfileTeacher() {
   });
 
   const onSubmit = async (data: FormDataProfileTeachers) => {
-    const currentUser = getAuth().currentUser;
-
-    if (currentUser) {
+    if (uidContextTeacher) {
       const dataToSave = {
         ...data,
-        userTypeNormal: true, // ajuste conforme necessário
+        userTypeNormal: true,
         uidInstitution: uidContextGeral,
       };
       try {
@@ -121,8 +125,7 @@ export function ProfileTeacher() {
         const teachersRef = collection(db, "teachers");
         await setDoc(doc(teachersRef, uidContextTeacher), dataToSave);
 
-        navigate("/", { replace: true });
-        handleLogout();
+        navigate("/dashboard", { replace: true });
       } catch (error) {
         console.error("Erro ao salvar dados do perfil:", error);
       }
@@ -157,7 +160,6 @@ export function ProfileTeacher() {
       institutionId,
       "classes"
     );
-    console.log(classesRefData);
 
     return onSnapshot(classesRefData, (snapshot) => {
       const dataClasses = snapshot.docs.map((doc) => ({
@@ -170,6 +172,10 @@ export function ProfileTeacher() {
       setClasses(dataClasses);
     });
   };
+
+  useEffect(() => {
+    dataTeacherinInstitutions(uidContextGeral);
+  }, []);
 
   const handleClassesChange = (uid: string) => {
     setSelectedClasses((prev) => {
@@ -221,10 +227,6 @@ export function ProfileTeacher() {
                 register={register}
                 value={institutionName}
               />
-            </div>
-
-            <div className="w-full">
-              <ContactForm register={register} errors={errors} user={user} />
             </div>
 
             <div className="w-full">

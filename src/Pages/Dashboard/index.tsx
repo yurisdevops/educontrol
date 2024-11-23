@@ -32,10 +32,10 @@ import { v4 as uuidV4 } from "uuid";
 import { ImProfile } from "react-icons/im";
 import { useCallback, useEffect, useState, ChangeEvent, useMemo } from "react";
 import {
-  createUserWithEmailAndPassword,
+  // createUserWithEmailAndPassword,
   getAuth,
   onAuthStateChanged,
-  updateProfile,
+  // updateProfile,
 } from "firebase/auth";
 import { InputMini } from "../../Components/InputMini";
 
@@ -44,6 +44,8 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { Button } from "../../Components/Button";
 import toast from "react-hot-toast";
+
+import axios from "axios";
 
 const registroTurmasSchema = z.object({
   nameClass: z.string(),
@@ -72,6 +74,8 @@ interface ImagensEventosProps {
   previewUrl: string;
   url: string;
 }
+
+const API_KEY = "AIzaSyCKmAyGMvidv5IibBEet1BhC2sQI3eccV8";
 
 export function Dashboard() {
   const {
@@ -275,46 +279,27 @@ export function Dashboard() {
     }
   };
 
-  const saveUidTeacher = async (uid: string) => {
-    try {
-      if (!user?.uid) {
-        throw new Error("User não encontrado.");
-      }
-
-      const dataRefTeacherUid = collection(
-        db,
-        "institutions",
-        uidContextInstitution,
-        "uidTeachers"
-      );
-
-      await addDoc(dataRefTeacherUid, {
-        uid: uid,
-      });
-
-      console.log("Uid Salvo");
-    } catch (error) {
-      console.error("Erro ao adicionar uid:", error);
-    }
-  };
-
   const registrationTeacher = async (data: FormDataRegisterTeachers) => {
     setLoading(true);
 
     try {
-      const authenticationUser = await createUserWithEmailAndPassword(
-        auth,
-        data.email,
-        data.password
+      const response = await axios.post(
+        `https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=${API_KEY}`,
+        {
+          email: data.email,
+          password: data.password,
+          returnSecureToken: false, // Evita autenticação automática
+        }
       );
-      const datatUser = authenticationUser.user;
-      const newUid = datatUser?.uid; // Captura o novo UID
-      setUidContextTeacher(newUid); // Atualiza o UID do professor
-      await updateProfile(datatUser, {
-        displayName: data.name,
-      });
 
-      await saveUidTeacher(newUid); // Salva o UID imediatamente após a criação
+      const newUid = response.data.localId;
+      const displayName = data.name;
+      const email = data.email; // Captura o novo UID
+      console.log(displayName);
+
+      setUidContextTeacher(newUid); // Atualiza o UID do professor
+
+      await saveUidTeacher(newUid, displayName, email); // Salva o UID imediatamente após a criação
 
       reset();
 
@@ -329,6 +314,30 @@ export function Dashboard() {
     }
   };
 
+  const saveUidTeacher = async (uid: string, name: string, email: string) => {
+    try {
+      if (!uidContextInstitution) {
+        throw new Error("Instituição não encontrada.");
+      }
+
+      const dataRefTeacherUid = collection(
+        db,
+        "institutions",
+        uidContextInstitution,
+        "uidTeachers"
+      );
+
+      await addDoc(dataRefTeacherUid, {
+        uid: uid,
+        name: name,
+        email: email,
+      });
+
+      console.log("Uid Salvo");
+    } catch (error) {
+      console.error("Erro ao adicionar uid:", error);
+    }
+  };
   const changeFile = (e: ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
       const image = e.target.files[0];

@@ -11,42 +11,42 @@ export function AdressForm({ register, errors }: AddressFormProps) {
     <section>
       <div className="w-full flex flex-col xl:flex-row xl:gap-4">
         <div className="flex-1">
-          <label htmlFor="placeOfBirth" className="ml-1 text-base">
+          <label htmlFor="state" className="ml-1 text-base">
             Estado:
           </label>
           <Input
             type="text"
             placeholder="ex: RJ"
-            name="openingHours"
+            name="state"
             register={register}
-            error={errors.openingHours?.message}
+            error={errors.state?.message}
           />
         </div>
         <div className="flex-1">
-          <label htmlFor="cep" className="ml-1 text-base">
+          <label htmlFor="county" className="ml-1 text-base">
             Municipio:
           </label>
           <Input
             type="text"
             placeholder="ex: Rio de Janeiro"
-            name="neighborhood"
+            name="county"
             register={register}
-            error={errors.neighborhood?.message}
+            error={errors.county?.message}
           />
         </div>
       </div>
 
       <div className="w-full flex flex-col xl:flex-row xl:gap-4">
         <div className="flex-1">
-          <label htmlFor="placeOfBirth" className="ml-1 text-base">
+          <label htmlFor="neighborhood" className="ml-1 text-base">
             Bairro:
           </label>
           <Input
             type="text"
             placeholder="ex: Campo Grande"
-            name="county"
+            name="neighborhood"
             register={register}
-            error={errors.county?.message}
+            error={errors.neighborhood?.message}
           />
         </div>
         <div className="flex-1">

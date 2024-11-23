@@ -55,12 +55,12 @@ export function RegisterInstitution() {
   };
 
   return (
-    <main className="h-screen w-full flex flex-col xl:flex-row">
-      <div className="xl:w-2/3 bg-greenEdu flex flex-col items-center justify-center text-whiteEdu gap-4">
-        <h1 className="font-bold font-sans text-3xl xl:text-5xl">
+    <main className="xl:h-screen xl:w-full flex flex-col-reverse xl:flex-row">
+      <div className="xl:w-2/3 h-screen bg-greenEdu flex flex-col items-center justify-center text-whiteEdu gap-4">
+        <h1 className="font-bold font-sans text-2xl xl:text-5xl">
           Seja bem-vindo de volta!
         </h1>
-        <span className="max-w-80 xl:max-w-lg xl:text-2xl ml-7 opacity-80">
+        <span className="max-w-80 xl:max-w-lg xl:text-2xl text-sm ml-7 opacity-80">
           "É ótimo ter você de volta ao Educontrol! Faça seu login e aproveite
           todas as ferramentas e recursos disponíveis para enriquecer sua
           experiência de aprendizado."
@@ -72,8 +72,8 @@ export function RegisterInstitution() {
           Entre
         </Link>
       </div>
-      <div className="w-full bg-whiteEdu flex flex-col justify-center items-center gap-6">
-        <h1 className="text-greenEdu font-bold font-sans text-5xl drop-shadow-xl">
+      <div className="xl:w-full xl:bg-whiteEdu h-screen flex flex-col justify-center items-center gap-6">
+        <h1 className="text-greenEdu font-bold ml-16 text-4xl xl:text-5xl drop-shadow-xl">
           Crie sua conta Instituição
         </h1>
         <form

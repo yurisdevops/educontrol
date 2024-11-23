@@ -105,8 +105,8 @@ export function LoginInstitution() {
         </Link>
       </div>
       <div className="xl:w-full h-screen xl:bg-whiteEdu flex flex-col justify-center items-center gap-6">
-        <h1 className="text-greenEdu font-bold ml-16 text-4xl xl:text-5xl drop-shadow-xl">
-          Acesse sua conta Instituição
+      <h1 className="text-greenEdu font-bold ml-10 text-4xl xl:text-5xl drop-shadow-xl">
+      Acesse sua conta Instituição
         </h1>
 
         <form

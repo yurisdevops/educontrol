@@ -8,7 +8,7 @@ import { auth, db } from "../../../services/firebaseConnection";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { doc, getDoc } from "firebase/firestore";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { useAuth } from "../../../Context/AuthContext";
 
@@ -22,7 +22,8 @@ type FormDataLoginTeachers = z.infer<typeof loginSchema>;
 export function LoginTeacher() {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false); // State for loading feedback
-  const { setUidContextTeacher } = useAuth();
+  const { setUidContextTeacher, dataTeacherinInstitutions, uidContextGeral } =
+    useAuth();
 
   const {
     register,
@@ -81,6 +82,10 @@ export function LoginTeacher() {
     }
   };
 
+  useEffect(() => {
+    dataTeacherinInstitutions(uidContextGeral);
+  }, []);
+
   return (
     <main className="xl:h-screen w-full flex flex-col-reverse xl:flex-row">
       <div className="xl:w-2/3 h-screen bg-greenEdu flex flex-col items-center justify-center text-whiteEdu gap-4">
@@ -100,7 +105,7 @@ export function LoginTeacher() {
         </Link>
       </div>
       <div className="xl:w-full h-screen xl:bg-whiteEdu flex flex-col justify-center items-center gap-6">
-        <h1 className="text-greenEdu font-bold ml-16 text-4xl xl:text-5xl drop-shadow-xl">
+        <h1 className="text-greenEdu font-bold ml-10 text-4xl xl:text-5xl drop-shadow-xl">
           Acesse sua conta Professor(a)
         </h1>
 
