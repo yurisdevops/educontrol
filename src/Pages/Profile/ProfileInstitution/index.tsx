@@ -8,7 +8,7 @@ import { doc, setDoc } from "firebase/firestore";
 import { getAuth } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../../Context/AuthContext";
-import { AdressForm } from "../../../Components/AdressForm";
+import { AddressForm } from "../../../Components/AdressForm";
 import { InstitutionForm } from "../../../Components/InstitututionForm";
 
 function validarCNPJ(cnpj: any | string[]) {
@@ -57,9 +57,6 @@ const profileinstitutionSchema = z.object({
       }
     ),
   typeTeaching: z.string().min(1, ""),
-  state: z
-    .string()
-    .min(1, "O campo estado é obrigatório"),
   cep: z.string().min(1, "O campo cep é obrigatório"),
   street: z.string().min(1, "O campo rua é obrigatória"),
   number: z.string().min(1, "O campo número é obrigatório"),
@@ -68,6 +65,7 @@ const profileinstitutionSchema = z.object({
   birthdate: z.string().min(1, "O campo ano de fundação é obrigatória"),
   neighborhood: z.string().min(1, "O campo bairro é obrigatório"),
   county: z.string().min(1, "O campo municipio é obrigatório"),
+  state: z.string().min(1, "O campo estado é obrigatório"),
 });
 
 type FormDataProfileInstitutions = z.infer<typeof profileinstitutionSchema>;
@@ -143,7 +141,7 @@ export function ProfileInstituion() {
             </div>
 
             <div className="w-full">
-              <AdressForm register={register} errors={errors} />
+              <AddressForm register={register} errors={errors} />
             </div>
             <div>
               <Button>Enviar</Button>

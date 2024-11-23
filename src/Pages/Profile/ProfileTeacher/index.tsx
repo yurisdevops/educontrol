@@ -15,7 +15,7 @@ import {
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../../Context/AuthContext";
 
-import { AdressForm } from "../../../Components/AdressForm";
+import { AddressForm } from "../../../Components/AdressForm";
 import { TeacherForm } from "../../../Components/TeacherForm";
 import { useEffect, useState } from "react";
 
@@ -84,7 +84,10 @@ const profileSchema = z.object({
   number: z.string().min(1, "Número é obrigatório"),
   complement: z.string().optional(),
   discipline: z.string().min(1, "Disciplina é obrigatória"),
-  classes: z.array(z.string()).min(1, "Selecione ao menos uma turma"),
+  classes: z.string(z.string()).min(1, "Selecione ao menos uma turma"),
+  neighborhood: z.string().min(1, "O campo bairro é obrigatório"),
+  county: z.string().min(1, "O campo municipio é obrigatório"),
+  state: z.string().min(1, "O campo estado é obrigatório"),
 });
 
 export type FormDataProfileTeachers = z.infer<typeof profileSchema>;
@@ -104,16 +107,9 @@ export function ProfileTeacher() {
   >([]);
   const [selectedClasses, setSelectedClasses] = useState<string[]>([]); // Estado para as classes selecionadas
 
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm<FormDataProfileTeachers>({
-    resolver: zodResolver(profileSchema),
-    mode: "onChange",
-  });
-
   const onSubmit = async (data: FormDataProfileTeachers) => {
+    console.log(data);
+
     if (uidContextTeacher) {
       const dataToSave = {
         ...data,
@@ -125,12 +121,23 @@ export function ProfileTeacher() {
         const teachersRef = collection(db, "teachers");
         await setDoc(doc(teachersRef, uidContextTeacher), dataToSave);
 
-        navigate("/dashboard", { replace: true });
+        setTimeout(() => {
+          navigate("/dashboard", { replace: true });
+        }, 1500);
       } catch (error) {
         console.error("Erro ao salvar dados do perfil:", error);
       }
     }
   };
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<FormDataProfileTeachers>({
+    resolver: zodResolver(profileSchema),
+    mode: "onChange",
+  });
 
   const handleLogout = async () => {
     try {
@@ -230,7 +237,7 @@ export function ProfileTeacher() {
             </div>
 
             <div className="w-full">
-              <AdressForm register={register} errors={errors} />
+              <AddressForm register={register} errors={errors} />
             </div>
 
             <div className="flex-col">

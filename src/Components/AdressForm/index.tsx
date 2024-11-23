@@ -6,12 +6,12 @@ type AddressFormProps = {
   errors: any; // Adicione o tipo correto para os errors
 };
 
-export function AdressForm({ register, errors }: AddressFormProps) {
+export function AddressForm({ register, errors }: AddressFormProps) {
   return (
     <section>
       <div className="w-full flex flex-col xl:flex-row xl:gap-4">
         <div className="flex-1">
-          <label htmlFor="state" className="ml-1 text-base">
+          <label htmlFor="placeOfBirth" className="ml-1 text-base">
             Estado:
           </label>
           <Input
@@ -23,7 +23,7 @@ export function AdressForm({ register, errors }: AddressFormProps) {
           />
         </div>
         <div className="flex-1">
-          <label htmlFor="county" className="ml-1 text-base">
+          <label htmlFor="cep" className="ml-1 text-base">
             Municipio:
           </label>
           <Input
@@ -38,7 +38,7 @@ export function AdressForm({ register, errors }: AddressFormProps) {
 
       <div className="w-full flex flex-col xl:flex-row xl:gap-4">
         <div className="flex-1">
-          <label htmlFor="neighborhood" className="ml-1 text-base">
+          <label htmlFor="placeOfBirth" className="ml-1 text-base">
             Bairro:
           </label>
           <Input

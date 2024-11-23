@@ -13,9 +13,9 @@ interface TeacherFormProps {
 
 export function TeacherForm({
   register,
+
   errors,
   value,
-  classes,
 }: TeacherFormProps) {
   const { teacherName, teacherEmail } = useAuth();
   return (
@@ -42,7 +42,7 @@ export function TeacherForm({
             type="text"
             placeholder="ex: Almeida Campos"
             name="surname"
-            error={errors.name?.message}
+            error={errors.surname?.message}
             register={register}
           />
         </div>
@@ -53,10 +53,10 @@ export function TeacherForm({
             SEXO:
           </label>
           <Select name="gender" register={register}>
-            <option value="" disabled selected>
+            <option value="" disabled>
               Selecione uma opção
             </option>
-            <option value={classes}>Masculino</option>
+            <option value="masculino">Masculino</option>
             <option value="feminino">Feminino</option>
           </Select>
         </div>
@@ -120,7 +120,7 @@ export function TeacherForm({
           </label>
           <Input
             type="text"
-            placeholder="ex:159.333.217-42"
+            placeholder="ex: 159.333.217-42"
             name="cpf"
             error={errors.cpf?.message}
             register={register}
