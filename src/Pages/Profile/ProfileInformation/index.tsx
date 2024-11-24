@@ -144,8 +144,12 @@ export function ProfileInformation() {
   };
 
   const onSubmit = async (data: FormDataProfileInformation) => {
+    console.log("Selected Teacher:", selectedTeacher);
     try {
-      const teacherDocRef = doc(db, "teachers", selectedTeacher.uid);
+      if (!selectedTeacher) {
+        throw new Error("Professor não selecionado.");
+      }
+      const teacherDocRef = doc(db, "teachers", selectedTeacher);
 
       await updateDoc(teacherDocRef, data);
       toast.success("Perfil Atualizado!");
@@ -163,8 +167,7 @@ export function ProfileInformation() {
 
   const handleCancel = () => {
     setIsEditing(false);
-    setSelectedTeacher("");
-
+    setSelectedTeacher(null);
     reset();
   };
 
