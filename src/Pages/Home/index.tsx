@@ -1,7 +1,14 @@
+import { useEffect } from "react";
 import HomeIMG from "../../Images/home.png";
 import { Link } from "react-router-dom";
+import { useAuth } from "../../Context/AuthContext";
 
 export function Home() {
+  const { logout } = useAuth();
+
+  useEffect(() => {
+    logout();
+  }, [logout]);
   return (
     <main className="w-full h-screen bg-greenEdu flex flex-col xl:flex-row items-center xl:pl-48 py-20 ">
       <img
