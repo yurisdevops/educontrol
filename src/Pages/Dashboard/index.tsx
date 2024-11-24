@@ -294,8 +294,7 @@ export function Dashboard() {
 
       const newUid = response.data.localId;
       const displayName = data.name;
-      const email = data.email; // Captura o novo UID
-      console.log(displayName);
+      const email = data.email;
 
       setUidContextTeacher(newUid); // Atualiza o UID do professor
 
@@ -544,7 +543,7 @@ export function Dashboard() {
                           {" "}
                           <Link
                             to={`/dashboard/class/${classInfo.uid}`}
-                            className="text-center w-24 border-2 border-greenEdu rounded-full"
+                            className="text-center w-40 border-2 border-greenEdu rounded-full"
                           >
                             {classInfo.nameClass}
                           </Link>
@@ -575,7 +574,7 @@ export function Dashboard() {
                       <div className="w-24 text-center">
                         <InputMini
                           type="text"
-                          placeholder="ex: 901"
+                          placeholder="ex:901 ou Enfermagem"
                           name="nameClass"
                           register={registerClass}
                         />
@@ -589,7 +588,7 @@ export function Dashboard() {
                       <div className="w-24 text-center">
                         <InputMini
                           type="text"
-                          placeholder="ex: 38"
+                          placeholder="ex:38"
                           name="maxStudent"
                           register={registerClass}
                         />

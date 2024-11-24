@@ -135,7 +135,7 @@ export function ProfileInformation() {
   }, [uidTeacher]);
 
   const handleTeacherSelect = (teacher: any) => {
-    setSelectedTeacher(teacher);
+    setSelectedTeacher(teacher.uid);
     setIsEditing(true);
 
     for (const key in teacher) {
@@ -159,6 +159,13 @@ export function ProfileInformation() {
           (error.message ? error.message : JSON.stringify(error))
       );
     }
+  };
+
+  const handleCancel = () => {
+    setIsEditing(false);
+    setSelectedTeacher("");
+
+    reset();
   };
 
   if (loading) {
@@ -187,6 +194,7 @@ export function ProfileInformation() {
           <select
             className=" text-blackEdu"
             id="teacherSelect"
+            value={selectedTeacher}
             onChange={(e) => {
               const selectedTeacher = teachersData.find(
                 (teacher) => teacher.uid === e.target.value
@@ -211,7 +219,9 @@ export function ProfileInformation() {
         </div>
         <button
           className="xl:-mb-10 mt-5 xl:ml-100 border px-4 border-greenEdu rounded-md font-medium text-whiteEdu bg-greenEdu hover:opacity-90 "
-          onClick={() => setIsEditing(!isEditing)}
+          onClick={() => {
+            isEditing ? handleCancel() : setIsEditing(true);
+          }}
         >
           {isEditing ? "Cancelar" : "Editar"}
         </button>
