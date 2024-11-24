@@ -40,7 +40,7 @@ EduControl é uma plataforma desenvolvida para instituições de ensino gerencia
 ---
 
 ## 🔗 **Acesse o Projeto**  
-[**Link para o EduControl**]((https://educontrol.vercel.app/))  
+Você pode acessar o projeto [neste link](https://educontrol.vercel.app/)
 
 ---
 
