@@ -158,10 +158,7 @@ export function ProfileInformation() {
       reset();
     } catch (error: any) {
       console.error("Erro ao atualizar o perfil:", error);
-      alert(
-        "Erro ao atualizar o perfil: " +
-          (error.message ? error.message : JSON.stringify(error))
-      );
+      toast.error("Erro ao atualizar o perfil...");
     }
   };
 
