@@ -595,10 +595,10 @@ export function Dashboard() {
                       </div>
 
                       <button
-                        className="xl:w-52 xl:mt-2 p-1 h-12 rounded-b-xl text-whiteEdu bg-greenEdu font-bold hover:opacity-90"
+                        className="xl:w-52 xl:mt-2 p-1 h-12 rounded-b-xl text-whiteEdu bg-greenEdu font-bold "
                         type="submit"
                       >
-                        Adicionar
+                        <p className="opacity-90">Adicionar</p>
                       </button>
                     </form>
                   </div>
