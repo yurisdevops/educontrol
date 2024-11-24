@@ -210,7 +210,7 @@ export function CalendarDisplay() {
         className={`w-85 flex flex-col max-w-sm p-6 items-center bg-white border-2 border-greenEdu rounded-lg shadow-md bg-whiteEdu`}
       >
         <button
-          className="w-full border-2 mb-2 border-whiteEdu bg-greenEdu rounded-full p-1 font-bold text-whiteEdu"
+          className="w-full border-2 mb-2 border-whiteEdu bg-greenEdu rounded-full p-1 font-bold text-whiteEdu hover:opacity-90"
           onClick={toggleCalendarVisibility} // Chama a função para alternar a visibilidade do calendário ao clicar
         >
           {calendarVisible ? "Fechar Calendário" : "Mostrar Calendário"}
@@ -269,7 +269,7 @@ export function CalendarDisplay() {
         {calendarVisible && ( // Renderiza a opção para exibir ou fechar eventos somente se o calendário estiver visível
           <div>
             <button
-              className="border-2 p-1 px-2 mt-2 text-greenEdu font-bold shadow-md border-whiteEdu rounded-full"
+              className="border-2 p-1 px-2 mt-2 text-greenEdu font-bold shadow-md border-whiteEdu rounded-full hover:opacity-90"
               onClick={toggleEventsVisibility} // Alterna a visibilidade da lista de eventos ao clicar
             >
               {eventsVisible ? "Fechar Eventos" : "Exibir Eventos"}
@@ -277,21 +277,23 @@ export function CalendarDisplay() {
           </div>
         )}
       </div>
-      {calendarVisible && ( // Renderiza a lista de eventos somente se o calendário estiver visível
+      {calendarVisible && (
         <div>
-          {eventsVisible && ( // Renderiza a lista de eventos somente se 'eventsVisible' for verdadeiro
+          {eventsVisible && (
             <div className="w-96 max-h-96 overflow-y-auto border-greenEdu border-2 bg-whiteEdu rounded-2xl -mt-88 text-center text-whiteEdu">
               <div className="realtive">
                 <h2
                   className={`${styles.heading} sticky top-0 bg-whiteEdu shadow-md text-greenEdu p-4`}
                 >
                   Eventos de {date.toLocaleString("pt-BR", { year: "numeric" })}
-                  
                 </h2>
                 <div className="w-94 border border-greenEdu absolute"></div>
                 <ul className={styles.eventList}>
                   {eventsForYear.map((event) => (
-                    <li key={event.uid} className={`${styles.eventItem} text-left ml-10 mb-2`} >
+                    <li
+                      key={event.uid}
+                      className={`${styles.eventItem} text-left ml-10 mb-2`}
+                    >
                       <span className={styles.eventDate}>
                         {event.date.toLocaleDateString("pt-BR")}
                       </span>

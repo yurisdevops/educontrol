@@ -598,7 +598,7 @@ export function Dashboard() {
                         className="xl:w-52 xl:mt-2 p-1 h-12 rounded-b-xl text-whiteEdu bg-greenEdu font-bold "
                         type="submit"
                       >
-                        <p className="opacity-90">Adicionar</p>
+                        <p className="hover:opacity-80">Adicionar</p>
                       </button>
                     </form>
                   </div>
