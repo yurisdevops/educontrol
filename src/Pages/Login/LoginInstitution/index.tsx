@@ -87,25 +87,25 @@ export function LoginInstitution() {
   };
 
   return (
-    <main className="xl:h-screen w-full flex flex-col-reverse xl:flex-row">
-      <div className="xl:w-2/3 h-screen bg-greenEdu flex flex-col items-center justify-center text-whiteEdu gap-4">
-        <h1 className="font-bold font-sans text-3xl xl:text-5xl">
+    <main className="2xl:h-screen w-full flex flex-col-reverse xl:flex-row 2xl:flex-row">
+      <div className="xl:w-2/3 2xl:w-2/3 h-screen bg-greenEdu flex flex-col items-center justify-center text-whiteEdu gap-4">
+        <h1 className="font-bold font-sans text-3xl 2xl:text-5xl">
           Ainda não tem acesso?
         </h1>
-        <span className="max-w-80 xl:max-w-lg xl:text-2xl ml-7">
+        <span className="max-w-80 2xl:max-w-lg 2xl:text-2xl ml-7">
           "É ótimo ter você conosco aqui no Educontrol! Faça seu cadastro e
           aproveite todas as ferramentas e recursos disponíveis para enriquecer
           sua experiência de aprendizado."
         </span>
         <Link
           to="/registerInstitution"
-          className="border-2 bg-whiteEdu text-greenEdu p-1 px-6 w-48 rounded-md text-xl text-center font-bold mt-5 hover:opacity-90"
+          className="border-2 bg-whiteEdu text-greenEdu p-1 px-6 w-48 rounded-md xl:text-xl 2xl:text-2xl text-center font-bold mt-5 hover:opacity-90"
         >
           Cadastre-se
         </Link>
       </div>
-      <div className="xl:w-full h-screen xl:bg-whiteEdu flex flex-col justify-center items-center gap-6">
-      <h1 className="text-greenEdu font-bold ml-10 text-4xl xl:text-5xl drop-shadow-xl">
+      <div className="xl:w-full 2xl:w-full h-screen 2xl:bg-whiteEdu flex flex-col justify-center items-center gap-6">
+      <h1 className="text-greenEdu font-bold ml-10 text-4xl 2xl:text-5xl drop-shadow-2xl">
       Acesse sua conta Instituição
         </h1>
 

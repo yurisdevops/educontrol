@@ -10,33 +10,33 @@ export function Home() {
     logout();
   }, [logout]);
   return (
-    <main className="w-full h-screen bg-greenEdu flex flex-col xl:flex-row items-center xl:pl-48 py-20 ">
+    <main className="w-full h-screen bg-greenEdu flex flex-col xl:flex-row 2xl:flex-row xl:gap-40 items-center 2xl:pl-48 py-20 ">
       <img
-        className=" xl:w-100 w-44  rotate-12 xl:pl-4 xl:ml-10 xl:-mr-10 drop-shadow-2xl "
+        className="w-44 xl:w-96 2xl:w-100 rotate-12 2xl:pl-4 2xl:ml-10 xl:ml-44 2xl:-mr-10 drop-shadow-2xl "
         src={HomeIMG}
         alt="Home"
       />
-      <div className="text-white text-whiteEdu flex flex-col gap-10 xl:w-5/6 justify-center items-center -mt-24 xl:-ml-48 2xl:pl-60 2xl:-mt-32 xl:pl-36 xl:mt-16">
-        <h1 className="xl:-ml-7 text-3xl mt-52 xl:mt-20 xl:text-8xl font-sans font-bold drop-shadow-xl">
+      <div className="text-white text-whiteEdu flex flex-col gap-10 2xl:w-5/6 justify-center items-center -mt-24 2xl:-ml-48 2xl:pl-60 2xl:-mt-32 xl:pl-10 xl:-mt-52">
+        <h1 className="2xl:-ml-7 text-3xl mt-52 2xl:mt-20 2xl:text-8xl font-sans font-bold drop-shadow-2xl">
           EduControl
         </h1>
-        <span className="max-w-80 xl:max-w-lg text-whiteEdu text-lg xl:text-3xl">
+        <span className="max-w-80 2xl:max-w-lg text-whiteEdu text-lg 2xl:text-3xl">
           O <strong>Educontrol</strong> é uma aplicação desenvolvida para
           facilitar o controle de alunos, turmas e pendências acadêmicas de
           forma eficiente para professores e instituições de ensino.
         </span>
-        <div className="flex xl:gap-24 gap-6 font-bold text-center">
+        <div className="flex 2xl:gap-24 gap-6 font-bold text-center">
           <Link
-            className="border-2 p-1 px-6 xl:w-52 w-32 rounded-md xl:text-xl text-xs text-greenEdu bg-whiteEdu"
+            className="flex justify-center items-center border-2 p-1 px-6 2xl:w-52 w-32 rounded-md 2xl:text-2xl text-xs text-greenEdu bg-whiteEdu"
             to="/loginInstitution"
           >
-            Sou Instituição
+            Instituição
           </Link>
           <Link
-            className="border-2 p-1 px-6 xl:w-52 w-32 rounded-md xl:text-xl text-xs text-greenEdu bg-whiteEdu"
+            className="flex justify-center items-center border-2 p-1 px-6 2xl:w-52 w-32 rounded-md 2xl:text-2xl text-xs text-greenEdu bg-whiteEdu"
             to="/loginTeacher"
           >
-            Sou Professor
+            Professor
           </Link>
         </div>
       </div>
