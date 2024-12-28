@@ -1,83 +1,122 @@
 # EduControl  
 
-EduControl é uma plataforma desenvolvida para instituições de ensino gerenciarem suas atividades com facilidade e eficiência. O sistema centraliza o controle de professores, turmas, alunos e eventos, promovendo organização e segurança com base no Firebase para armazenamento e autenticação.
+> Sistema de gerenciamento para instituições de ensino, centralizando professores, turmas, alunos e eventos em uma plataforma única e segura.  
 
----
+**EduControl** é uma plataforma moderna desenvolvida para facilitar a gestão acadêmica, oferecendo recursos avançados e uma interface intuitiva para instituições de ensino e professores.  
 
-## 🎯 **Funcionalidades**
+## Índice  
+
+- [Descrição do Projeto](#descrição-do-projeto)  
+- [Funcionalidades](#funcionalidades)  
+- [Tecnologias Utilizadas](#tecnologias-utilizadas)  
+- [Como Usar](#como-usar)  
+- [Scripts Disponíveis](#scripts-disponíveis)  
+- [Estrutura do Projeto](#estrutura-do-projeto)  
+- [Futuras Implementações](#futuras-implementações)  
+- [Contato](#contato)  
+
+## Descrição do Projeto  
+
+O **EduControl** organiza de maneira eficiente o gerenciamento de professores, turmas, alunos e eventos, com foco na segurança e na facilidade de uso.  
+
+## Funcionalidades  
 
 ### Instituição  
-- Registro e gerenciamento de contas de professores vinculados à instituição.  
-- Criação e exclusão de turmas.  
-- Adição de alunos às turmas.  
-- Upload de imagens para um **Swiper** de destaque.  
-- Gerenciamento de eventos no calendário.  
-- Edição do perfil de professores vinculados.  
+- **Gestão de Professores:** Criação, edição e exclusão de perfis.  
+- **Controle de Turmas e Alunos:** Adição e gerenciamento de alunos dentro das turmas.  
+- **Destaques Visuais:** Upload de imagens para o _Swiper_.  
+- **Calendário:** Organização e gerenciamento de eventos importantes.  
 
 ### Professor  
-- Acesso somente para **visualizar**:  
-  - Turmas.  
-  - Alunos.  
-  - Calendário e eventos.  
-  - Imagens do Swiper.  
+- **Acesso Restrito:** Professores podem apenas visualizar:  
+  - Listagem de turmas e alunos.  
+  - Calendário de eventos.  
+  - Imagens de destaque no _Swiper_.  
 
 ### Segurança  
-- Contas de professores não podem criar, editar ou excluir dados, garantindo maior controle e proteção das informações.  
-- Integração com Firebase para autenticação e armazenamento.  
+- Contas de professores têm permissões limitadas, garantindo controle e proteção das informações.  
+- Autenticação e armazenamento de dados integrados ao Firebase.  
+
+## Tecnologias Utilizadas  
+
+- **Vite:** Ferramenta de build rápida para aplicações modernas.  
+- **React:** Biblioteca para construção de interfaces dinâmicas.  
+- **TypeScript:** Superset do JavaScript com tipagem estática.  
+- **Tailwind CSS:** Framework de CSS para estilização rápida e consistente.  
+- **Firebase:** Backend como serviço para autenticação e armazenamento.  
+- **React Toastify:** Notificações elegantes para feedback visual.  
+- **Zod:** Validação robusta de dados e formulários.  
+- **Calendário Personalizado:** Gerenciamento de eventos.  
+
+## Como Usar  
+
+### 1. Clonar o Repositório  
+
+```bash  
+git clone https://github.com/seu-usuario/educontrol.git  
+cd educontrol  
+```  
+
+### 2. Instalar Dependências  
+
+Com `npm`:  
+
+```bash  
+npm install  
+```  
+
+Com `yarn`:  
+
+```bash  
+yarn install  
+```  
+
+### 3. Configurar Variáveis de Ambiente  
+
+Adicione as credenciais do Firebase ao arquivo `.env` na raiz do projeto:  
+
+```env  
+VITE_FIREBASE_API_KEY=SEU_API_KEY  
+VITE_FIREBASE_AUTH_DOMAIN=SEU_AUTH_DOMAIN  
+VITE_FIREBASE_PROJECT_ID=SEU_PROJECT_ID  
+VITE_FIREBASE_STORAGE_BUCKET=SEU_STORAGE_BUCKET  
+VITE_FIREBASE_MESSAGING_SENDER_ID=SEU_MESSAGING_SENDER_ID  
+VITE_FIREBASE_APP_ID=SEU_APP_ID  
+```  
+
+### 4. Executar o Projeto  
+
+```bash  
+npm run dev  
+```  
+
+Acesse o projeto no navegador: `http://localhost:5173`.  
+
+## Scripts Disponíveis  
+
+- **`npm run dev`**: Inicia o servidor de desenvolvimento.  
+- **`npm run build`**: Gera os arquivos para produção.  
+- **`npm run preview`**: Visualiza a aplicação após o build.  
+
+## Estrutura do Projeto  
+
+- **`src/components`**: Componentes reutilizáveis.  
+- **`src/pages`**: Páginas principais da aplicação.  
+- **`src/services`**: Configuração de serviços externos, como Firebase.  
+- **`src/styles`**: Estilos globais e específicos.  
+- **`src/utils`**: Funções utilitárias.  
+
+## Futuras Implementações  
+
+- **Relatórios Detalhados:** Geração de relatórios de desempenho e frequência.  
+- **Painel Administrativo Avançado:** Mais filtros e visualizações para dados de professores e alunos.  
+- **Chat Interno:** Comunicação entre professores e administração.  
+
+## Contato  
+
+Desenvolvido por [Yuri Souza](https://github.com/yuridevops). Entre em contato para dúvidas ou sugestões!  
 
 ---
 
-## 🛠️ **Tecnologias Utilizadas**  
-- **Vite**  
-- **React**  
-- **TypeScript**  
-- **Tailwind CSS**  
-- **Firebase**  
-- **React Toastify**  
-- **Calendário com plugins personalizados**  
-- **Zod** (validação de formulários e dados)  
-
----
-
-## 🔗 **Acesse o Projeto**  
-Você pode acessar o projeto [EduControl](https://educontrol.vercel.app/)
-
----
-
-## 🚀 **Como Executar Localmente**  
-
-1. Clone o repositório:  
-   ```bash
-   git clone https://github.com/seu-usuario/educontrol.git
-   ```  
-
-2. Acesse o diretório:  
-   ```bash
-   cd educontrol
-   ```  
-
-3. Instale as dependências:  
-   ```bash
-   npm install
-   ```  
-
-4. Inicie o servidor de desenvolvimento:  
-   ```bash
-   npm run dev
-   ```  
-
-5. Acesse no navegador:  
-   ```
-   http://localhost:5173
-   ```  
-
----
-
-## 📚 **Contribuindo**  
-Contribuições são bem-vindas! Sinta-se à vontade para abrir uma _issue_ ou enviar um _pull request_.  
-
----
-
-## 📝 **Licença**  
-Este projeto está sob a licença MIT. Consulte o arquivo [LICENSE](LICENSE) para mais detalhes.  
-
+### 🎓 **Simplifique a gestão acadêmica com o EduControl!**  
+```  
