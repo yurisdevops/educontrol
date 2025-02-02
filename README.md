@@ -2,7 +2,7 @@
 
 > Plataforma web para controle acadêmico de estudantes e professores.
 
-O **Educontrol** é uma aplicação moderna desenvolvida com tecnologias focadas em fornecer uma experiência simples e intuitiva para gerenciar atividades acadêmicas e interagir com outros usuários. O projeto inclui recursos avançados para a criação e gerenciamento de atividades, com controle de visibilidade e notificações.
+O **Educontrol** é uma aplicação moderna focada em fornecer uma experiência simples e intuitiva para gerenciar atividades acadêmicas e interagir com outros usuários. O projeto inclui recursos avançados para a criação e gerenciamento de atividades, com controle de visibilidade e notificações.
 
 ## Índice
 
@@ -87,11 +87,17 @@ Acesse a aplicação no navegador: [EduControl](https://educontrol.vercel.app).
 
 ## Estrutura do Projeto
 
-- **`src/app`**: Estrutura da aplicação.
-- **`src/components`**: Componentes reutilizáveis.
-- **`src/pages`**: Páginas principais.
-- **`src/styles`**: Estilos globais e específicos.
-- **`src/utils`**: Funções utilitárias e helpers.
+- **`public`**: Arquivos públicos.
+- **`src`**:
+  - **`Components`**: Componentes reutilizáveis.
+  - **`Context`**: Contexto da aplicação.
+  - **`Error`**: Páginas de erro.
+  - **`Images`**: Imagens do projeto.
+  - **`Pages`**: Páginas principais.
+  - **`Protected`**: Rotas protegidas.
+  - **`Routes`**: Configuração de rotas.
+  - **`Widgets/Calendar`**: Widgets e calendário.
+  - **`services`**: Serviços da aplicação.
 
 ## Futuras Implementações
 
@@ -106,3 +112,4 @@ Desenvolvido por [Yuri Souza](https://github.com/yurisdevops). Entre em contato 
 ---
 
 ### ✅ **Gerencie suas atividades acadêmicas de maneira simples e interativa com o Educontrol!**
+
