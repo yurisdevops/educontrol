@@ -35,10 +35,10 @@ O **Educontrol** permite criar, compartilhar e gerenciar atividades acadêmicas 
 
 ## Tecnologias Utilizadas
 
-- **Tecnologias Utilizadas:** Tecnologias modernas para construção de aplicações web.
-- **Sistema de Autenticação:** Integração segura para login com Google.
-- **Banco de Dados NoSQL:** Armazenamento de atividades e comentários.
-- **Estilização Modular:** Estilização responsiva para componentes dinâmicos.
+- **Next.js (App Router):** Framework moderno para construção de aplicações web.
+- **Auth.js:** Sistema de autenticação integrado ao Google.
+- **Firestore:** Banco de dados NoSQL para armazenar tarefas e comentários.
+- **CSS Modules:** Estilização modular para componentes dinâmicos.
 
 ## Como Usar
 
