@@ -1,8 +1,8 @@
 # Educontrol
 
-> Plataforma web para controle acadêmico de estudantes e professores.
+> Plataforma web para gerenciamento acadêmico de estudantes e professores.
 
-O **Educontrol** é uma aplicação moderna focada em fornecer uma experiência simples e intuitiva para gerenciar atividades acadêmicas e interagir com outros usuários. O projeto inclui recursos avançados para a criação e gerenciamento de atividades, com controle de visibilidade e notificações.
+O **Educontrol** é uma aplicação moderna desenvolvida para fornecer uma experiência simples e intuitiva para gerenciar atividades acadêmicas, professores, alunos e turmas. O projeto inclui recursos avançados para a criação e gerenciamento de atividades, com controle de visibilidade, calendário dinâmico e carrossel de imagens.
 
 ## Índice
 
@@ -17,28 +17,27 @@ O **Educontrol** é uma aplicação moderna focada em fornecer uma experiência 
 
 ## Descrição do Projeto
 
-O **Educontrol** permite criar, compartilhar e gerenciar atividades acadêmicas de forma prática e segura. Ele oferece:
-
-- Criação de atividades públicas ou privadas.
-- Compartilhamento de URLs de atividades públicas para fácil acesso.
-- Adição e exclusão de comentários em atividades públicas.
-- Gerenciamento de atividades privadas visíveis apenas pelo criador.
+O **Educontrol** permite que as escolas criem usuários, gerenciem atividades, quadros de professores e alunos, criem turmas e gerenciem eventos através de um calendário dinâmico. A escola é a única responsável por adicionar e excluir eventos e imagens no carrossel, e os professores têm acesso a esses dados. Além disso, para acessar o dashboard, os usuários (escola e professores) precisam preencher os dados de perfil para validar o acesso.
 
 ## Funcionalidades
 
 - **Gerenciamento de Atividades:** Criação, edição e exclusão de atividades públicas e privadas.
-- **Comentários em Atividades Públicas:** Interação social com qualquer usuário autenticado.
-- **Compartilhamento Fácil:** URLs únicas para atividades públicas.
-- **Validação Segura:** Login com Google utilizando sistema de autenticação.
-- **Integração de Banco de Dados:** Armazenamento e recuperação de dados no banco de dados.
-- **Interface Moderna:** Navegação responsiva com estilização moderna.
+- **Gerenciamento de Professores e Alunos:** Cadastro e exclusão de professores e alunos.
+- **Criação de Turmas:** Organização dos alunos e professores em turmas.
+- **Calendário de Atividades Dinâmico:** Adição de eventos apenas pela escola.
+- **Carrossel de Imagens:** Adição e exclusão de imagens apenas pela escola.
+- **Validação de Acesso:** Perfil deve ser preenchido para validar o acesso ao dashboard.
+- **Integração de Banco de Dados:** Armazenamento e recuperação de dados no Firebase.
+- **Interface Moderna:** Navegação responsiva com TailwindCSS.
 
 ## Tecnologias Utilizadas
 
-- **Next.js (App Router):** Framework moderno para construção de aplicações web.
-- **Auth.js:** Sistema de autenticação integrado ao Google.
-- **Firestore:** Banco de dados NoSQL para armazenar tarefas e comentários.
-- **CSS Modules:** Estilização modular para componentes dinâmicos.
+- **Vite:** Ferramenta de build rápida.
+- **ReactJS:** Biblioteca JavaScript para construção de interfaces.
+- **Firebase:** Banco de dados NoSQL e autenticação.
+- **TailwindCSS:** Framework CSS para estilização.
+- **Zod:** Validação de esquemas.
+- **React Hook Form:** Gerenciamento de formulários.
 
 ## Como Usar
 
